@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       limit:
-        description: "Most (game, country) pairs to read in this run: 1500 takes about 25 minutes, 7000 about 2 hours"
+        description: "Most (game, country) pairs to read in this run: about 20 a minute, so 1500 take about 75 minutes and 5100 (what a new country or the first backlog needs) about 4 hours"
         default: "1500"
 
 permissions:
@@ -25,7 +25,7 @@ concurrency:
 jobs:
   past:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 330
     # A refresh of the catalog that failed leaves nothing new to read.
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
@@ -36,11 +36,14 @@ jobs:
       - name: The tests of the rules
         run: python3 -m unittest test_backfill test_prices -v
       - name: Read the past prices
+        # The script saves what it read every 20 pairs: a run cut short by this limit still keeps its work, since the next step runs whatever happened.
+        timeout-minutes: 300
         env:
           ITAD_API_KEY: ${{ secrets.ITAD_API_KEY }}
         # The API asks not to run at its limit: the script keeps to 400 requests in any window of 5 minutes, so a long backlog takes a long time.
         run: python3 backfill.py --limit ${{ github.event.inputs.limit || 1500 }}
       - name: Commit what changed
+        if: always()
         run: |
           if [ -z "$(git status --porcelain -- v1/prices prices-backfilled.json)" ]; then
             echo "nothing changed"
