@@ -36,7 +36,7 @@ from steam.client import SteamClient
 
 IMAGES = "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps"
 STORE = "https://store.steampowered.com/app"
-LISTED = {"game", "demo", "beta"}
+LISTED = {"game", "demo", "beta", "application"}
 CHUNK = 200
 PARALLEL = 4
 MAX_LOST_SHARE = 0.005   # a read that loses more of the ids is not written
@@ -105,7 +105,7 @@ def image(appid, name):
 
 
 def classify(appid, data):
-    """The catalog entry of an app, or None when it declares no Android depot (or is not a game, a demo or a beta)."""
+    """The catalog entry of an app, or None when it declares no Android depot (or is not a game, a demo, a beta or an application)."""
     common = data.get("common") or {}
     kind = str(common.get("type", "")).lower()
     name = str(common.get("name", "")).strip()
@@ -286,6 +286,28 @@ def app_list(key):
         last = batch[-1]
 
 
+DEMOS_PAGE = 1000
+
+
+def demo_ids():
+    """Every demo the store lists. Steam's list of apps (app_list) leaves them out, and a demo can have an Android build of its own. The store's own query answers
+    without a key, a page at a time: the ids only, nothing else is asked. Sort 2 is by app id: the other orders repeat some demos from one page to the next and skip others."""
+    ids, start = [], 0
+    while True:
+        payload = {"query": {"start": start, "count": DEMOS_PAGE, "sort": 2, "filters": {"type_filters": {"include_demos": True, "include_games": False}}},
+                   "context": {"language": "english", "country_code": "US", "steam_realm": 1}, "data_request": {}}
+        url = "https://api.steampowered.com/IStoreQueryService/Query/v1/?input_json=" + urllib.parse.quote(json.dumps(payload, separators=(",", ":")))
+        body = get_json(url)["response"]
+        batch = [item["appid"] for item in body.get("ids", [])]
+        ids += batch
+        total = (body.get("metadata") or {}).get("total_matching_records", 0)
+        print(f"demos: {len(ids)} of {total}", flush=True)
+        if not batch or len(ids) >= total:
+            return sorted(set(ids))
+        start += len(batch)
+        time.sleep(PAUSE)
+
+
 def scan(ids):
     """The entries of the apps with an Android build among `ids`, the number of ids that could not be read, and the count of each app type seen."""
     client = SteamClient()
@@ -326,6 +348,7 @@ def main():
     parser.add_argument("--out", default="v1/catalog.json")
     parser.add_argument("--texts", default="v1/text", help="the folder of the text files")
     parser.add_argument("--no-texts", action="store_true", help="only the catalog, not the texts")
+    parser.add_argument("--no-demos", action="store_true", help="do not ask the store for the list of demos (Steam's list of apps does not hold them)")
     args = parser.parse_args()
     key = os.environ.get("STEAM_API_KEY")
     if args.ids:
@@ -334,6 +357,9 @@ def main():
         ids = app_list(key)
     else:
         sys.exit("STEAM_API_KEY is not set, and no --ids file was given")
+    if not args.no_demos:
+        # A list that cannot be read stops the run: the file stays as it was, rather than losing every demo for a day.
+        ids = sorted(set(ids) | set(demo_ids()))
     print(f"{len(ids)} ids to read", flush=True)
     found, lost, types = scan(ids)
     ready = sum(1 for e in found if e["android"] == "ready")

@@ -1,5 +1,6 @@
 import json
 import unittest
+import urllib.parse
 
 import refresh
 
@@ -15,6 +16,41 @@ def depot(oslist, public=True, dlc=None, size=1000, download=400):
 
 def app(kind="game", depots=None, **common):
     return {"common": {"name": "A game", "type": kind, **common}, "depots": depots or {}}
+
+
+class DemoIdsTest(unittest.TestCase):
+    def setUp(self):
+        self.get_json, self.sleep = refresh.get_json, refresh.time.sleep
+        refresh.time.sleep = lambda seconds: None
+
+    def tearDown(self):
+        refresh.get_json, refresh.time.sleep = self.get_json, self.sleep
+
+    def test_the_demos_are_read_a_page_at_a_time_until_there_is_no_more(self):
+        pages = {0: [5, 3, 9], 3: [7, 3, 11], 6: [20]}
+        asked = []
+
+        def fake(url):
+            query = json.loads(urllib.parse.unquote(url.split("input_json=")[1]))["query"]
+            asked.append(query["start"])
+            self.assertTrue(query["filters"]["type_filters"]["include_demos"])
+            self.assertFalse(query["filters"]["type_filters"]["include_games"])
+            return {"response": {"metadata": {"total_matching_records": 7}, "ids": [{"appid": a} for a in pages[query["start"]]]}}
+
+        refresh.get_json = fake
+        self.assertEqual([3, 5, 7, 9, 11, 20], refresh.demo_ids())
+        self.assertEqual([0, 3, 6], asked)
+
+    def test_an_empty_page_ends_the_list_even_when_the_total_says_more(self):
+        refresh.get_json = lambda url: {"response": {"metadata": {"total_matching_records": 50}, "ids": []}}
+        self.assertEqual([], refresh.demo_ids())
+
+    def test_a_list_that_cannot_be_read_stops_the_run(self):
+        def broken(url):
+            raise OSError("down")
+        refresh.get_json = broken
+        with self.assertRaises(OSError):
+            refresh.demo_ids()
 
 
 class ClassifyTest(unittest.TestCase):
@@ -39,8 +75,8 @@ class ClassifyTest(unittest.TestCase):
         entry = refresh.classify(5, app(depots={"11": depot("android", dlc=99)}))
         self.assertEqual("unreleased", entry["android"])
 
-    def test_only_games_demos_and_betas_are_listed(self):
-        for kind in ("game", "demo", "beta"):
+    def test_only_games_demos_betas_and_applications_are_listed(self):
+        for kind in ("game", "demo", "beta", "application"):
             self.assertIsNotNone(refresh.classify(5, app(kind, {"11": depot("android")})))
         for kind in ("dlc", "tool", "video", "music"):
             self.assertIsNone(refresh.classify(5, app(kind, {"11": depot("android")})))
