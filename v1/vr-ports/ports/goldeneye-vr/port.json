@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "id": "goldeneye-vr",
+  "revision": 1,
+  "name": "GoldenEye VR",
+  "summary": {
+    "fr": "GoldenEye 007 en réalité virtuelle, à partir d'une ROM personnelle.",
+    "en": "GoldenEye 007 in virtual reality, from a personal ROM."
+  },
+  "description": {
+    "fr": "Port en réalité virtuelle de GoldenEye 007. Il demande la ROM américaine de la Nintendo 64 (12 582 912 octets), que le port copie lui-même depuis un fichier choisi.",
+    "en": "A virtual reality port of GoldenEye 007. It needs the US Nintendo 64 ROM (12,582,912 bytes), which the port copies itself from a chosen file."
+  },
+  "category": "decomp",
+  "status": "beta",
+  "author": "MrSco",
+  "license": "MIT",
+  "links": {
+    "repo": "https://github.com/MrSco/goldeneye-vr"
+  },
+  "formFactors": [
+    "vr"
+  ],
+  "compat": [
+    {
+      "family": "meta",
+      "models": [
+        "Quest 2",
+        "Quest 3",
+        "Quest 3S",
+        "Quest Pro"
+      ],
+      "level": "announced"
+    }
+  ],
+  "apk": {
+    "source": {
+      "type": "github-release",
+      "repo": "MrSco/goldeneye-vr"
+    },
+    "assetPattern": "GoldenEye-VR-*.apk",
+    "packageName": "com.gevr.port",
+    "signerSha256": "382ff89137e24be05a0eed4794ad8d6bd9e3b3011cca72f98a4885cdba875452"
+  },
+  "data": {
+    "sources": [
+      {
+        "id": "rom",
+        "type": "user-file",
+        "required": true,
+        "filenamePattern": "(?i).*(goldeneye|007).*\\.(z64|v64|n64)$",
+        "label": {
+          "fr": "ROM GoldenEye 007 (USA)",
+          "en": "GoldenEye 007 (USA) ROM"
+        },
+        "help": {
+          "fr": "Le fichier doit déjà être sur cet appareil. Le port le choisit et le copie lui-même.",
+          "en": "The file must already be on this device. The port chooses it and copies it itself."
+        },
+        "validate": {
+          "sizeBytes": 12582912
+        },
+        "platform": "n64"
+      }
+    ],
+    "destination": {
+      "strategy": "app-picker"
+    }
+  },
+  "post": [
+    {
+      "action": "open-app",
+      "hint": {
+        "fr": "Dans le port : « Choose ROM file… ».",
+        "en": "In the port: “Choose ROM file…”."
+      }
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "verifiedOn": "2026-10-06",
+    "notes": "Nom de paquet et empreinte du certificat relevés sur l'APK de la version v0.4.10 publiée le 2026-10-06, au premier téléchargement : à confirmer par une seconde source."
+  },
+  "media": {
+    "cover": {
+      "path": "ports/goldeneye-vr/cover.jpg",
+      "sha256": "2b3409ecf2ce5aa88a6aa638da54bca82cce9d0d2087d55021c38f8ef359c47b",
+      "width": 600,
+      "height": 900
+    },
+    "icon": {
+      "path": "ports/goldeneye-vr/icon.jpg",
+      "sha256": "a3d373b8d1b66b18fdebcc7dc76ab449ac012d28ba0dcf96a1682ed8d1634906",
+      "width": 512,
+      "height": 512
+    },
+    "credit": {
+      "fr": "Images tirées de l'APK du projet. La couverture est composée par GamePort à partir d'elles.",
+      "en": "Images taken from the project's APK. The cover is composed by GamePort from them."
+    }
+  }
+}

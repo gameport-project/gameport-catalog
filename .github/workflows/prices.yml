@@ -1,0 +1,45 @@
+name: Prices
+
+# Every six hours, reads what Steam sells the apps of catalog.json for, in a few countries, and commits the files of prices (v1/prices) when a price changed.
+# Needs the secret STEAM_API_KEY (a Steam Web API key: https://steamcommunity.com/dev/apikey). Nothing to install: the script uses Python alone.
+on:
+  schedule:
+    - cron: "37 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# The two workflows push to the same branch: one at a time.
+concurrency:
+  group: catalog
+  cancel-in-progress: false
+
+jobs:
+  prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: The tests of the rules
+        run: python3 -m unittest test_prices -v
+      - name: Read the prices and add the changes to their history
+        env:
+          STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
+        run: python3 prices.py
+      - name: Commit what changed
+        run: |
+          # New files are not seen by git diff: status says both what changed and what is new.
+          if [ -z "$(git status --porcelain -- v1/prices prices-pending.json)" ]; then
+            echo "nothing changed"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add v1/prices prices-pending.json
+            git commit -m "data: update the prices"
+            git pull --rebase
+            git push
+          fi

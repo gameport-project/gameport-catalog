@@ -1,0 +1,54 @@
+name: Past prices
+
+# Right after the catalog is refreshed, reads the past prices (two years) of the games and countries that have none yet, from IsThereAnyDeal: a game that is new to
+# the catalog gets its history within minutes of being added, and a run with nothing new asks the API nothing. The prices from now on come from Steam (prices.yml);
+# this is only for what came before. By hand, it fills a long backlog (a new country): give the number of pairs to read.
+# Needs the secret ITAD_API_KEY (an API key of an app made at https://isthereanydeal.com/apps/). Nothing to install: the script uses Python alone.
+on:
+  workflow_run:
+    workflows: ["Daily catalog"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Most (game, country) pairs to read in this run: 1500 takes about 25 minutes, 7000 about 2 hours"
+        default: "1500"
+
+permissions:
+  contents: write
+
+# The workflows push to the same branch: one at a time.
+concurrency:
+  group: catalog
+  cancel-in-progress: false
+
+jobs:
+  past:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    # A refresh of the catalog that failed leaves nothing new to read.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: The tests of the rules
+        run: python3 -m unittest test_backfill test_prices -v
+      - name: Read the past prices
+        env:
+          ITAD_API_KEY: ${{ secrets.ITAD_API_KEY }}
+        # The API asks not to run at its limit: the script keeps to 400 requests in any window of 5 minutes, so a long backlog takes a long time.
+        run: python3 backfill.py --limit ${{ github.event.inputs.limit || 1500 }}
+      - name: Commit what changed
+        run: |
+          if [ -z "$(git status --porcelain -- v1/prices prices-backfilled.json)" ]; then
+            echo "nothing changed"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add v1/prices prices-backfilled.json
+            git commit -m "data: add the past prices of the new games and countries"
+            git pull --rebase
+            git push
+          fi

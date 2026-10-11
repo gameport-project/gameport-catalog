@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "id": "sourcevr",
+  "revision": 1,
+  "name": "SourceVR",
+  "summary": {
+    "fr": "Half-Life 2, Portal et leurs épisodes en réalité virtuelle.",
+    "en": "Half-Life 2, Portal and their episodes in virtual reality."
+  },
+  "description": {
+    "fr": "Port en réalité virtuelle du moteur Source. Il lit les fichiers des jeux possédés sur Steam (Half-Life 2, Portal, Episodes, Lost Coast) depuis un dossier au choix.",
+    "en": "A virtual reality port of the Source engine. It reads the files of the games owned on Steam (Half-Life 2, Portal, Episodes, Lost Coast) from a folder of the player's choice."
+  },
+  "category": "source-port",
+  "status": "released",
+  "author": "tinsarfal",
+  "links": {
+    "repo": "https://github.com/tinsarfal/SourceVR"
+  },
+  "formFactors": [
+    "vr"
+  ],
+  "compat": [
+    {
+      "family": "meta",
+      "level": "announced"
+    },
+    {
+      "family": "pico",
+      "level": "announced",
+      "note": {
+        "fr": "Variante expérimentale, non testée par l'auteur.",
+        "en": "Experimental variant, not tested by the author."
+      }
+    }
+  ],
+  "apk": {
+    "source": {
+      "type": "github-release",
+      "repo": "tinsarfal/SourceVR"
+    },
+    "assetPattern": "SourceVR-0*.apk",
+    "packageName": "com.sourcevrport.hl2vr",
+    "signerSha256": "532cdaaf12deae0eb42704394b603c66c035211ad973e4cdf17cbb78000776c3",
+    "variants": [
+      {
+        "family": "pico",
+        "assetPattern": "SourceVR-pico-*.apk"
+      }
+    ]
+  },
+  "data": {
+    "sources": [
+      {
+        "id": "hl2",
+        "type": "steam",
+        "appId": 220,
+        "branch": "steam_legacy",
+        "os": "windows",
+        "include": [
+          "hl2/**",
+          "platform/**"
+        ],
+        "required": true,
+        "label": {
+          "fr": "Half-Life 2",
+          "en": "Half-Life 2"
+        },
+        "platform": "pc-steam",
+        "depots": [
+          221
+        ],
+        "keyFiles": [
+          "hl2/gameinfo.txt"
+        ]
+      },
+      {
+        "id": "portal",
+        "type": "steam",
+        "appId": 400,
+        "os": "windows",
+        "include": [
+          "portal/**"
+        ],
+        "required": false,
+        "requires": [
+          "hl2"
+        ],
+        "label": {
+          "fr": "Portal",
+          "en": "Portal"
+        },
+        "platform": "pc-steam",
+        "keyFiles": [
+          "portal/gameinfo.txt"
+        ]
+      },
+      {
+        "id": "ep1",
+        "type": "steam",
+        "appId": 380,
+        "os": "windows",
+        "include": [
+          "episodic/**"
+        ],
+        "required": false,
+        "requires": [
+          "hl2"
+        ],
+        "label": {
+          "fr": "Half-Life 2: Episode One",
+          "en": "Half-Life 2: Episode One"
+        },
+        "platform": "pc-steam"
+      },
+      {
+        "id": "ep2",
+        "type": "steam",
+        "appId": 420,
+        "os": "windows",
+        "include": [
+          "episodic/**",
+          "ep2/**"
+        ],
+        "required": false,
+        "requires": [
+          "hl2"
+        ],
+        "label": {
+          "fr": "Half-Life 2: Episode Two",
+          "en": "Half-Life 2: Episode Two"
+        },
+        "platform": "pc-steam"
+      },
+      {
+        "id": "lostcoast",
+        "type": "steam",
+        "appId": 340,
+        "os": "windows",
+        "include": [
+          "lostcoast/**"
+        ],
+        "required": false,
+        "requires": [
+          "hl2"
+        ],
+        "label": {
+          "fr": "Half-Life 2: Lost Coast",
+          "en": "Half-Life 2: Lost Coast"
+        },
+        "platform": "pc-steam"
+      },
+      {
+        "id": "portal2",
+        "type": "steam",
+        "appId": 620,
+        "os": "windows",
+        "include": [
+          "update/**",
+          "portal2/**",
+          "platform/**",
+          "portal2_dlc1/**",
+          "portal2_dlc2/**"
+        ],
+        "rename": {
+          "platform": "portal2_platform"
+        },
+        "depots": [
+          621,
+          624
+        ],
+        "required": false,
+        "label": {
+          "fr": "Portal 2 (expérimental)",
+          "en": "Portal 2 (experimental)"
+        },
+        "help": {
+          "fr": "L'auteur du port le dit expérimental et pas prêt pour jouer normalement.",
+          "en": "The author of the port says it is experimental and not ready for normal play."
+        },
+        "platform": "pc-steam"
+      },
+      {
+        "id": "ez",
+        "type": "steam",
+        "appId": 714070,
+        "os": "windows",
+        "include": [
+          "EntropyZero/**"
+        ],
+        "depots": [
+          714071
+        ],
+        "required": false,
+        "requires": [
+          "hl2",
+          "ep2"
+        ],
+        "label": {
+          "fr": "Entropy : Zero",
+          "en": "Entropy : Zero"
+        },
+        "help": {
+          "fr": "Il demande aussi Half-Life 2 et Episode Two, qui viennent avec.",
+          "en": "It also needs Half-Life 2 and Episode Two, which come with it."
+        },
+        "platform": "pc-steam"
+      }
+    ],
+    "destination": {
+      "strategy": "root-folder",
+      "path": "/SourceVRPort/common"
+    },
+    "verify": [
+      {
+        "path": "hl2/gameinfo.txt"
+      }
+    ],
+    "estimatedSizeBytes": 6500000000
+  },
+  "post": [
+    {
+      "action": "open-app",
+      "hint": {
+        "fr": "Dans le port : « Import a folder… » ou « Game directory », puis choisir le dossier Download/SourceVRPort/common.",
+        "en": "In the port: “Import a folder…” or “Game directory”, then choose Download/SourceVRPort/common."
+      }
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "verifiedOn": "2026-10-06",
+    "notes": "Nom de paquet et empreinte du certificat relevés sur l'APK de la version 0.1.28 publiée le 2026-10-02, au premier téléchargement : à confirmer par une seconde source. Le dépôt Steam 221 (branche steam_legacy) contient hl2/ et platform/ : un filtre de fichiers n'est pas nécessaire."
+  },
+  "media": {
+    "cover": {
+      "path": "ports/sourcevr/cover.jpg",
+      "sha256": "aeaa293410cd367d805bfa5c7b02f301919788f6a0ca0f2cea05376283843143",
+      "width": 600,
+      "height": 900
+    },
+    "icon": {
+      "path": "ports/sourcevr/icon.png",
+      "sha256": "d78db9ccbc57b7a70a56e17ac650149b5b503d21c84048c9b12956657d4b8e87",
+      "width": 192,
+      "height": 192
+    },
+    "credit": {
+      "fr": "Images tirées de l'APK du projet. La couverture est composée par GamePort à partir d'elles.",
+      "en": "Images taken from the project's APK. The cover is composed by GamePort from them."
+    }
+  }
+}

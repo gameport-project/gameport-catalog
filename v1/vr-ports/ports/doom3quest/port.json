@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "id": "doom3quest",
+  "revision": 1,
+  "name": "Doom 3: Quest Edition",
+  "summary": {
+    "fr": "Doom 3 en réalité virtuelle.",
+    "en": "Doom 3 in virtual reality."
+  },
+  "description": {
+    "fr": "Port de Doom 3 en réalité virtuelle, à partir des fichiers de la copie possédée sur Steam.",
+    "en": "A virtual reality port of Doom 3, from the files of the copy owned on Steam."
+  },
+  "category": "source-port",
+  "status": "released",
+  "author": "Team Beef",
+  "links": {
+    "repo": "https://github.com/Team-Beef-Studios/Doom3Quest",
+    "site": "https://doom3quest.com"
+  },
+  "formFactors": [
+    "vr"
+  ],
+  "compat": [
+    {
+      "family": "meta",
+      "models": [
+        "Quest",
+        "Quest 2"
+      ],
+      "level": "announced",
+      "note": {
+        "fr": "Le README annonce les Quest 1 et 2 uniquement.",
+        "en": "The README announces the Quest 1 and 2 only."
+      }
+    }
+  ],
+  "apk": {
+    "source": {
+      "type": "github-release",
+      "repo": "Team-Beef-Studios/Doom3Quest"
+    },
+    "assetPattern": "doom3quest*.apk",
+    "packageName": "com.drbeef.doom3quest",
+    "signerSha256": "cb8c4dc47094b956c347c0706ae76798bca2a0e8134ff65f510910a55d0a9be1"
+  },
+  "data": {
+    "sources": [
+      {
+        "id": "base",
+        "type": "steam",
+        "appId": 9050,
+        "os": "windows",
+        "include": [
+          "base/game0*.pk4",
+          "base/pak00*.pk4"
+        ],
+        "required": true,
+        "label": {
+          "fr": "Doom 3 (Steam)",
+          "en": "Doom 3 (Steam)"
+        },
+        "platform": "pc-steam",
+        "keyFiles": [
+          "base/pak000.pk4"
+        ]
+      }
+    ],
+    "destination": {
+      "strategy": "root-folder",
+      "path": "/Doom3Quest"
+    },
+    "verify": [
+      {
+        "path": "base/pak000.pk4"
+      },
+      {
+        "path": "base/game00.pk4"
+      }
+    ]
+  },
+  "review": {
+    "status": "reviewed",
+    "verifiedOn": "2026-10-06",
+    "notes": "Nom de paquet et empreinte du certificat relevés sur l'APK de la version v1.4.8 publiée le 2026-09-30, au premier téléchargement : à confirmer par une seconde source. Chemin des données et appId Steam non confirmés."
+  },
+  "media": {
+    "cover": {
+      "path": "ports/doom3quest/cover.jpg",
+      "sha256": "98e9d6881f457d774b921b5db79fb0349b9dfe95022ba8f7daa9557926fbbc30",
+      "width": 600,
+      "height": 900
+    },
+    "icon": {
+      "path": "ports/doom3quest/icon.png",
+      "sha256": "abb6173a44b8dfbe849b5803aa1571f6cd48d2753db94675bc9940cba5b640e4",
+      "width": 512,
+      "height": 512
+    },
+    "hero": {
+      "path": "ports/doom3quest/hero.jpg",
+      "sha256": "21937e8086bdd0fb7ebc816493883cfcdaeec97abf053c1a5736acb420980a2b",
+      "width": 1024,
+      "height": 558
+    },
+    "credit": {
+      "fr": "Images tirées de l'APK du projet. La couverture est composée par GamePort à partir d'elles.",
+      "en": "Images taken from the project's APK. The cover is composed by GamePort from them."
+    }
+  }
+}

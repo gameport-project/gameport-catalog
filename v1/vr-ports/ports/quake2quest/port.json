@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "id": "quake2quest",
+  "revision": 1,
+  "name": "Quake II Quest",
+  "summary": {
+    "fr": "Quake II en réalité virtuelle.",
+    "en": "Quake II in virtual reality."
+  },
+  "description": {
+    "fr": "Port de Quake II en réalité virtuelle. L'APK contient la version partagiciel. les fichiers du jeu complet (baseq2/*.pak) viennent de la copie possédée sur Steam ou ailleurs.",
+    "en": "A virtual reality port of Quake II. The APK carries the shareware version. the files of the full game (baseq2/*.pak) come from the copy owned on Steam or elsewhere."
+  },
+  "category": "source-port",
+  "status": "released",
+  "author": "Team Beef",
+  "links": {
+    "repo": "https://github.com/Team-Beef-Studios/Quake2Quest"
+  },
+  "formFactors": [
+    "vr"
+  ],
+  "compat": [
+    {
+      "family": "meta",
+      "models": [
+        "Quest 2",
+        "Quest 3",
+        "Quest Pro"
+      ],
+      "level": "announced"
+    },
+    {
+      "family": "pico",
+      "level": "announced",
+      "note": {
+        "fr": "Neo 3 et Pico 4 d'après le README.",
+        "en": "Neo 3 and Pico 4 according to the README."
+      }
+    }
+  ],
+  "apk": {
+    "source": {
+      "type": "github-release",
+      "repo": "Team-Beef-Studios/Quake2Quest"
+    },
+    "assetPattern": "quake2quest-*.apk",
+    "packageName": "com.drbeef.quake2quest",
+    "signerSha256": "cb8c4dc47094b956c347c0706ae76798bca2a0e8134ff65f510910a55d0a9be1"
+  },
+  "data": {
+    "sources": [
+      {
+        "id": "steam",
+        "type": "steam",
+        "appId": 2320,
+        "os": "windows",
+        "include": [
+          "baseq2/*.pak"
+        ],
+        "required": false,
+        "label": {
+          "fr": "Quake II (Steam)",
+          "en": "Quake II (Steam)"
+        },
+        "platform": "pc-steam",
+        "keyFiles": [
+          "baseq2/pak0.pak"
+        ]
+      },
+      {
+        "id": "own",
+        "type": "user-folder",
+        "required": false,
+        "filenamePattern": "(?i)pak0\\.pak$",
+        "label": {
+          "fr": "Dossier baseq2 (GOG ou disque)",
+          "en": "baseq2 folder (GOG or disc)"
+        },
+        "platform": "pc-other"
+      }
+    ],
+    "anyOf": [
+      "steam",
+      "own"
+    ],
+    "destination": {
+      "strategy": "root-folder",
+      "path": "/Quake2Quest"
+    },
+    "verify": [
+      {
+        "path": "baseq2/pak0.pak"
+      }
+    ]
+  },
+  "post": [
+    {
+      "action": "open-app",
+      "hint": {
+        "fr": "Le port doit avoir été lancé une fois pour créer son dossier.",
+        "en": "The port must have been started once to create its folder."
+      }
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "verifiedOn": "2026-10-06",
+    "notes": "Nom de paquet et empreinte du certificat relevés sur l'APK de la version v1.1.1 publiée le 2026-09-29, au premier téléchargement : à confirmer par une seconde source."
+  },
+  "media": {
+    "cover": {
+      "path": "ports/quake2quest/cover.jpg",
+      "sha256": "46633c455eb37429dc52f74d8e81c66340a72d8804e40e4f401d78b777d3eeb3",
+      "width": 600,
+      "height": 900
+    },
+    "icon": {
+      "path": "ports/quake2quest/icon.png",
+      "sha256": "dd43b6f73eb1792bbaace31532e3b736c97a8f09bee8282787c0ad7035d23324",
+      "width": 144,
+      "height": 144
+    },
+    "credit": {
+      "fr": "Images tirées de l'APK du projet. La couverture est composée par GamePort à partir d'elles.",
+      "en": "Images taken from the project's APK. The cover is composed by GamePort from them."
+    }
+  }
+}

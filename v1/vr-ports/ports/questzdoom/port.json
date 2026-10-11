@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "id": "questzdoom",
+  "revision": 1,
+  "name": "QuestZDoom",
+  "summary": {
+    "fr": "Doom, Heretic, Hexen et autres jeux à WAD en réalité virtuelle.",
+    "en": "Doom, Heretic, Hexen and other WAD games in virtual reality."
+  },
+  "description": {
+    "fr": "Port de ZDoom en réalité virtuelle. Il lit les fichiers WAD des jeux possédés dans le dossier /QuestZDoom/wads.",
+    "en": "A virtual reality port of ZDoom. It reads the WAD files of the owned games from the /QuestZDoom/wads folder."
+  },
+  "category": "source-port",
+  "status": "released",
+  "author": "Team Beef",
+  "links": {
+    "repo": "https://github.com/Team-Beef-Studios/QuestZDoom"
+  },
+  "formFactors": [
+    "vr"
+  ],
+  "compat": [
+    {
+      "family": "meta",
+      "models": [
+        "Quest",
+        "Quest 2"
+      ],
+      "level": "announced",
+      "note": {
+        "fr": "Annoncé pour les Oculus Quest uniquement.",
+        "en": "Announced for the Oculus Quest only."
+      }
+    }
+  ],
+  "apk": {
+    "source": {
+      "type": "github-release",
+      "repo": "Team-Beef-Studios/QuestZDoom"
+    },
+    "assetPattern": "questzdoom-*.apk",
+    "packageName": "com.drbeef.questzdoom",
+    "signerSha256": "cb8c4dc47094b956c347c0706ae76798bca2a0e8134ff65f510910a55d0a9be1"
+  },
+  "data": {
+    "sources": [
+      {
+        "id": "wads",
+        "type": "user-folder",
+        "required": true,
+        "label": {
+          "fr": "Fichiers WAD du jeu",
+          "en": "WAD files of the game"
+        },
+        "platform": "pc-other"
+      }
+    ],
+    "destination": {
+      "strategy": "root-folder",
+      "path": "/QuestZDoom/wads"
+    }
+  },
+  "post": [
+    {
+      "action": "open-app",
+      "hint": {
+        "fr": "Le port doit avoir été lancé une fois pour créer son dossier.",
+        "en": "The port must have been started once to create its folder."
+      }
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "verifiedOn": "2026-10-06",
+    "notes": "Nom de paquet et empreinte du certificat relevés sur l'APK de la version 1.6.2 publiée le 2026-09-30, au premier téléchargement : à confirmer par une seconde source."
+  },
+  "media": {
+    "cover": {
+      "path": "ports/questzdoom/cover.jpg",
+      "sha256": "3aca86de15326efe42036460d5a852d4041988a7be6f9787916b628e77e9beda",
+      "width": 600,
+      "height": 900
+    },
+    "hero": {
+      "path": "ports/questzdoom/hero.jpg",
+      "sha256": "7ab137bc2a8869f89eab336a54c235490d42fe6d31ddb02dd71ddf24f4f0abb2",
+      "width": 1280,
+      "height": 356
+    },
+    "credit": {
+      "fr": "Images tirées de l'APK du projet. La couverture est composée par GamePort à partir d'elles.",
+      "en": "Images taken from the project's APK. The cover is composed by GamePort from them."
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "ports": [
+    {
+      "id": "doom3quest",
+      "path": "ports/doom3quest/port.json",
+      "revision": 1,
+      "sha256": "dcce5fb8c81df7a33e3485616e9b7f4ade9cefd1af694c17fb802b5d494d2079"
+    },
+    {
+      "id": "galaxyquest",
+      "path": "ports/galaxyquest/port.json",
+      "revision": 1,
+      "sha256": "441c475d7a1b11ab15fa2c861c34ffac5637e246a21d4213a07d2f248aa682b5"
+    },
+    {
+      "id": "goldeneye-vr",
+      "path": "ports/goldeneye-vr/port.json",
+      "revision": 1,
+      "sha256": "92ba4b2f212595308c94550be8217fed756af71150fa1a86ee9530e879cc6135"
+    },
+    {
+      "id": "lambda1vr",
+      "path": "ports/lambda1vr/port.json",
+      "revision": 1,
+      "sha256": "cb28693af2f002d4229c5259fdd5b792eb6005c2adec8360a92cf744b5e71f09"
+    },
+    {
+      "id": "quake2quest",
+      "path": "ports/quake2quest/port.json",
+      "revision": 1,
+      "sha256": "d9aec8be250a9ecf29b1cc43124f6f9ba2546399c9275172fcc1a2b346e68bd9"
+    },
+    {
+      "id": "quakequest",
+      "path": "ports/quakequest/port.json",
+      "revision": 1,
+      "sha256": "28522a50eabd99280ae16b60be740619ad965c671a29d968d95bb4ec1047e838"
+    },
+    {
+      "id": "questzdoom",
+      "path": "ports/questzdoom/port.json",
+      "revision": 1,
+      "sha256": "3643709aa472f87acc3a8814247e1082a47877473df17802b6879fb43606eb85"
+    },
+    {
+      "id": "sourcevr",
+      "path": "ports/sourcevr/port.json",
+      "revision": 1,
+      "sha256": "835a85388f4760b6c49c6ef1ebf44bb523acf376a112af6ac68e8effef723bbf"
+    }
+  ]
+}

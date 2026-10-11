@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "id": "galaxyquest",
+  "revision": 1,
+  "name": "GalaxyQuest",
+  "summary": {
+    "fr": "Super Mario Galaxy en réalité virtuelle, à partir d'un disque Wii personnel.",
+    "en": "Super Mario Galaxy in virtual reality, from a personal Wii disc."
+  },
+  "description": {
+    "fr": "Port natif de Super Mario Galaxy, construit sur la décompilation du jeu. Il demande une copie du disque Wii, convertie une fois sur un ordinateur avec l'outil du projet, puis copiée dans le dossier du port. GamePort installe l'application, la conversion et la copie restent à faire sur un ordinateur.",
+    "en": "A native port of Super Mario Galaxy, built on the decompilation of the game. It needs a copy of the Wii disc, converted once on a computer with the project's tool, then copied to the port's folder. GamePort installs the app, the conversion and the copy are still done on a computer."
+  },
+  "category": "decomp",
+  "status": "beta",
+  "author": "bigmak94",
+  "links": {
+    "repo": "https://github.com/bigmak94/GalaxyQuest"
+  },
+  "formFactors": [
+    "vr"
+  ],
+  "compat": [
+    {
+      "family": "meta",
+      "models": [
+        "Quest 2",
+        "Quest 3"
+      ],
+      "level": "announced",
+      "note": {
+        "fr": "Quest 2 et Quest 3 testés par l'auteur, la Quest 3S n'est pas essayée.",
+        "en": "Quest 2 and Quest 3 tested by the author, the Quest 3S is not tried."
+      }
+    }
+  ],
+  "apk": {
+    "source": {
+      "type": "github-release",
+      "repo": "bigmak94/GalaxyQuest"
+    },
+    "assetPattern": "GalaxyQuest.apk",
+    "packageName": "com.galaxy.quest",
+    "signerSha256": "df7f20e34d4c46ba6d35cfb9ba067d23e192dd54048ba1c08917e16ef477ebf4"
+  },
+  "data": {
+    "sources": [
+      {
+        "id": "disc",
+        "type": "user-file",
+        "required": true,
+        "filenamePattern": "(?i).*\\.(iso|rvz|wbfs)$",
+        "label": {
+          "fr": "Disque Super Mario Galaxy (Wii)",
+          "en": "Super Mario Galaxy disc (Wii)"
+        },
+        "help": {
+          "fr": "Une image du disque, europe (RMGP01) ou américaine (RMGE01), convertie sur un ordinateur avec l'outil du projet.",
+          "en": "A disc image, European (RMGP01) or American (RMGE01), converted on a computer with the project's tool."
+        },
+        "platform": "wii"
+      }
+    ],
+    "destination": {
+      "strategy": "adb-only",
+      "path": "Android/data/com.galaxy.quest/files/game"
+    },
+    "estimatedSizeBytes": 7000000000
+  },
+  "review": {
+    "status": "reviewed",
+    "verifiedOn": "2026-10-06",
+    "notes": "Nom de paquet et empreinte du certificat relevés sur l'APK de la version v0.1.8 publiée le 2026-10-03, dont la somme SHA-256 correspond à celle de la release. Les données demandent une conversion sur ordinateur, que GamePort ne fait pas."
+  },
+  "media": {
+    "cover": {
+      "path": "ports/galaxyquest/cover.jpg",
+      "sha256": "dd43c2f2cfd719e15957143a5693ba0e4c0547b5c369955fe750b492970d50b6",
+      "width": 600,
+      "height": 900
+    },
+    "icon": {
+      "path": "ports/galaxyquest/icon.png",
+      "sha256": "f0f6c165d3430eac9224177755bf6b06a9633aca71dce869585b81dcdfc7fcf4",
+      "width": 192,
+      "height": 192
+    },
+    "hero": {
+      "path": "ports/galaxyquest/hero.jpg",
+      "sha256": "eb86e1b90bee847abcf2e04f766d362ec2af771770748b46adc54ae67505d43c",
+      "width": 1024,
+      "height": 576
+    },
+    "credit": {
+      "fr": "Images tirées de l'APK du projet. La couverture est composée par GamePort à partir d'elles.",
+      "en": "Images taken from the project's APK. The cover is composed by GamePort from them."
+    }
+  }
+}

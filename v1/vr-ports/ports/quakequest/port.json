@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "id": "quakequest",
+  "revision": 1,
+  "name": "QuakeQuest",
+  "summary": {
+    "fr": "Quake en réalité virtuelle.",
+    "en": "Quake in virtual reality."
+  },
+  "description": {
+    "fr": "Port de Quake pour les casques Quest et Pico, fondé sur DarkPlaces. L'application contient le shareware, les fichiers du jeu complet sont repris de la copie possédée sur Steam.",
+    "en": "A port of Quake for Quest and Pico headsets, based on DarkPlaces. The app holds the shareware, the files of the full game are taken from the copy owned on Steam."
+  },
+  "category": "source-port",
+  "status": "released",
+  "author": "Team Beef",
+  "links": {
+    "repo": "https://github.com/Team-Beef-Studios/QuakeQuest"
+  },
+  "formFactors": [
+    "vr"
+  ],
+  "compat": [
+    {
+      "family": "meta",
+      "models": [
+        "Quest",
+        "Quest 2"
+      ],
+      "level": "announced",
+      "note": {
+        "fr": "Le README annonce les Quest 1 et 2.",
+        "en": "The README announces the Quest 1 and 2."
+      }
+    },
+    {
+      "family": "pico",
+      "models": [
+        "Pico 4"
+      ],
+      "level": "announced"
+    }
+  ],
+  "apk": {
+    "source": {
+      "type": "github-release",
+      "repo": "Team-Beef-Studios/QuakeQuest"
+    },
+    "assetPattern": "quakequest-*.apk",
+    "packageName": "com.drbeef.quakequest",
+    "signerSha256": "cb8c4dc47094b956c347c0706ae76798bca2a0e8134ff65f510910a55d0a9be1"
+  },
+  "data": {
+    "sources": [
+      {
+        "id": "steam",
+        "type": "steam",
+        "appId": 2310,
+        "os": "windows",
+        "include": [
+          "id1/*.pak"
+        ],
+        "required": true,
+        "label": {
+          "fr": "Quake (Steam)",
+          "en": "Quake (Steam)"
+        },
+        "platform": "pc-steam",
+        "keyFiles": [
+          "id1/pak0.pak"
+        ]
+      }
+    ],
+    "destination": {
+      "strategy": "root-folder",
+      "path": "/QuakeQuest"
+    },
+    "verify": [
+      {
+        "path": "id1/pak0.pak"
+      }
+    ]
+  },
+  "review": {
+    "status": "reviewed",
+    "verifiedOn": "2026-10-06",
+    "notes": "Nom de paquet et empreinte du certificat relevés sur l'APK de la version v1.6.0 publiée le 2026-09-29. Le README décrit le dossier QuakeQuest/id1 pour les fichiers PAK. L'appId Steam et le chemin dans le dépôt Steam ne sont pas confirmés."
+  },
+  "media": {
+    "cover": {
+      "path": "ports/quakequest/cover.jpg",
+      "sha256": "41e06ad6b296c3570e6e918cb31cfd3a4f10c8856f4d0ac09fdcec735e1b3e1e",
+      "width": 600,
+      "height": 900
+    },
+    "icon": {
+      "path": "ports/quakequest/icon.png",
+      "sha256": "52d9d622e16efd1eb901a26761723ec273e3647c50f12c45be714f1d27f3a367",
+      "width": 144,
+      "height": 144
+    },
+    "credit": {
+      "fr": "Images tirées de l'APK du projet. La couverture est composée par GamePort à partir d'elles.",
+      "en": "Images taken from the project's APK. The cover is composed by GamePort from them."
+    }
+  }
+}

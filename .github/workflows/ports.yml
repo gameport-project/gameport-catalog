@@ -1,0 +1,44 @@
+name: Ports index
+
+# When a manifest of a VR port is added or changed, writes the index of the ports (the fingerprint of each manifest) and commits it. Nobody edits the index by hand
+# and no version is raised: see ports_index.py. Nothing to install, the script uses Python alone.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "v1/vr-ports/ports/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# The workflows push to the same branch: one at a time.
+concurrency:
+  group: catalog
+  cancel-in-progress: false
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Write the index
+        run: python3 ports_index.py
+      - name: The tests of the index, once it is written
+        run: python3 -m unittest test_ports_index -v
+      - name: Commit it when it changed
+        run: |
+          if [ -z "$(git status --porcelain -- v1/vr-ports/index.json)" ]; then
+            echo "index already up to date"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add v1/vr-ports/index.json
+            git commit -m "data: update the index of the ports"
+            git pull --rebase
+            git push
+          fi
