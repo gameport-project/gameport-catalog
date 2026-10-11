@@ -1,10 +1,14 @@
 name: Prices
 
-# Every six hours, reads what Steam sells the apps of catalog.json for, in a few countries, and commits the files of prices (v1/prices) when a price changed.
+# Every six hours, and right after the catalog is refreshed (so an app that is new to the catalog has its price at once), reads what Steam sells the apps of
+# catalog.json for, in a few countries, and commits the files of prices (v1/prices) when a price changed.
 # Needs the secret STEAM_API_KEY (a Steam Web API key: https://steamcommunity.com/dev/apikey). Nothing to install: the script uses Python alone.
 on:
   schedule:
     - cron: "37 */6 * * *"
+  workflow_run:
+    workflows: ["Daily catalog"]
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -19,6 +23,8 @@ jobs:
   prices:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # A refresh of the catalog that failed leaves nothing new to read.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

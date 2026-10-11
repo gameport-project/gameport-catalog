@@ -1,12 +1,12 @@
 name: Past prices
 
-# Right after the catalog is refreshed, reads the past prices (two years) of the games and countries that have none yet, from IsThereAnyDeal: a game that is new to
+# Right after the prices are read (which is right after the catalog is refreshed, then every six hours), reads the past prices (two years) of the games and countries that have none yet, from IsThereAnyDeal: a game that is new to
 # the catalog gets its history within minutes of being added, and a run with nothing new asks the API nothing. The prices from now on come from Steam (prices.yml);
 # this is only for what came before. By hand, it fills a long backlog (a new country): give the number of pairs to read.
 # Needs the secret ITAD_API_KEY (an API key of an app made at https://isthereanydeal.com/apps/). Nothing to install: the script uses Python alone.
 on:
   workflow_run:
-    workflows: ["Daily catalog"]
+    workflows: ["Prices"]
     types: [completed]
   workflow_dispatch:
     inputs:
@@ -26,7 +26,7 @@ jobs:
   past:
     runs-on: ubuntu-latest
     timeout-minutes: 330
-    # A refresh of the catalog that failed leaves nothing new to read.
+    # A read of the prices that failed leaves nothing new to read.
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v4
