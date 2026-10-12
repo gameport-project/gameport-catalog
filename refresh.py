@@ -104,6 +104,11 @@ def image(appid, name):
     return f"{IMAGES}/{appid}/{name}" if name else None
 
 
+def asset_name(common, key):
+    """The file name Steam publishes for one of the library pictures of an app (`library_capsule`, `library_hero`...), or None when it publishes none."""
+    return (((common.get("library_assets_full") or {}).get(key) or {}).get("image") or {}).get("english") or None
+
+
 def classify(appid, data):
     """The catalog entry of an app, or None when it declares no Android depot (or is not a game, a demo, a beta or an application)."""
     common = data.get("common") or {}
@@ -118,8 +123,7 @@ def classify(appid, data):
     published = [d for d in android if isinstance((d.get("manifests") or {}).get("public"), dict)]
     base = [d for d in published if number(d.get("dlcappid")) <= 0]
     ready = bool(base)
-    assets = common.get("library_assets_full") or {}
-    asset = lambda key: ((assets.get(key) or {}).get("image") or {}).get("english") or None
+    asset = lambda key: asset_name(common, key)
     header = (common.get("header_image") or {}).get("english") or asset("library_header")
     categories = common.get("category") or {}
     tags = [number(t, -1) for t in (common.get("store_tags") or {}).values()]
@@ -308,6 +312,67 @@ def demo_ids():
         time.sleep(PAUSE)
 
 
+# The pictures an app gets by default when Steam names none: the file is only a guess, and a recent app or a demo often has no such file.
+GUESSED = {"cover": "library_600x900.jpg", "banner": "library_hero.jpg"}
+ARTWORK_KEYS = {"cover": "library_capsule", "banner": "library_hero"}
+
+
+def picture_exists(url):
+    """True when Steam has a file at that address."""
+    try:
+        request = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "gameport-catalog"})
+        with urllib.request.urlopen(request, timeout=20) as answer:
+            return answer.status == 200
+    except Exception:
+        return False
+
+
+def read_parents(ids):
+    """The data of the apps `ids` (the full games of the demos), read the way the scan reads them."""
+    client = SteamClient()
+    client.anonymous_login()
+    try:
+        return {int(appid): data for appid, data in (client.get_product_info(apps=list(ids), timeout=90).get("apps") or {}).items()}
+    finally:
+        client.logout()
+
+
+# The other file names Steam uses for the same picture, on the apps that predate the hashed names.
+OLD_NAMES = {"cover": ["portrait.png"], "banner": []}
+
+
+def mend_artwork(entries, exists=picture_exists, parents=read_parents):
+    """Finds a real file for the cover or the banner of an app whose own is only a guess that has no file: first the other name Steam gave the same picture on the
+    older apps (portrait.png), then, for a demo or any app that has a parent, the picture of its full game. An app that has neither keeps what it has: nothing
+    better is known. Only the guessed addresses are checked; the ones Steam named are trusted. Returns how many pictures were replaced."""
+    missing = []
+    for entry in entries:
+        for field, default in GUESSED.items():
+            url = entry.get(field)
+            if url and url == image(entry["appid"], default) and not exists(url):
+                missing.append((entry, field))
+    mended = 0
+    left = []
+    for entry, field in missing:
+        found = next((u for u in (image(entry["appid"], name) for name in OLD_NAMES[field]) if exists(u)), None)
+        if found:
+            entry[field] = found
+            mended += 1
+        elif entry.get("parent"):
+            left.append((entry, field))
+    if not left:
+        return mended
+    data = parents(sorted({entry["parent"] for entry, _ in left}))
+    for entry, field in left:
+        common = (data.get(entry["parent"]) or {}).get("common") or {}
+        names = [asset_name(common, ARTWORK_KEYS[field]), GUESSED[field]] + OLD_NAMES[field]
+        url = next((u for u in (image(entry["parent"], n) for n in names if n) if exists(u)), None)
+        if url:
+            entry[field] = url
+            mended += 1
+    return mended
+
+
 def scan(ids):
     """The entries of the apps with an Android build among `ids`, the number of ids that could not be read, and the count of each app type seen."""
     client = SteamClient()
@@ -362,6 +427,7 @@ def main():
         ids = sorted(set(ids) | set(demo_ids()))
     print(f"{len(ids)} ids to read", flush=True)
     found, lost, types = scan(ids)
+    print(f"pictures found again for the apps whose own cover or banner has no file: {mend_artwork(found)}", flush=True)
     ready = sum(1 for e in found if e["android"] == "ready")
     print(f"{len(found)} apps with an Android depot ({ready} ready, {len(found) - ready} unreleased, {sum(1 for e in found if e['vr'])} VR), {lost} ids lost")
     print("app types seen:", dict(sorted(types.items(), key=lambda kv: -kv[1])[:8]))

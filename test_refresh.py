@@ -273,3 +273,63 @@ class RenderTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MendArtworkTest(unittest.TestCase):
+    def entry(self, appid, parent=None, cover=None, banner=None):
+        return {"appid": appid, "parent": parent, "cover": cover or refresh.image(appid, "library_600x900.jpg"), "banner": banner or refresh.image(appid, "library_hero.jpg")}
+
+    def test_a_cover_that_exists_is_left_alone_without_asking_for_the_parent(self):
+        asked = []
+        entry = self.entry(1, parent=2)
+        refresh.mend_artwork([entry], exists=lambda url: True, parents=lambda ids: asked.append(ids) or {})
+        self.assertEqual([], asked)
+        self.assertTrue(entry["cover"].endswith("/1/library_600x900.jpg"))
+
+    def test_a_cover_Steam_named_is_trusted_and_not_checked(self):
+        checked = []
+        entry = self.entry(1, cover=refresh.image(1, "abc123/library_capsule.jpg"), banner=refresh.image(1, "def456/library_hero.jpg"))
+        self.assertEqual(0, refresh.mend_artwork([entry], exists=lambda url: checked.append(url) or False))
+        self.assertEqual([], checked)
+
+    def test_an_older_app_gets_the_other_name_of_its_cover(self):
+        entry = self.entry(1)
+        has = {refresh.image(1, "portrait.png"), refresh.image(1, "library_hero.jpg")}
+        self.assertEqual(1, refresh.mend_artwork([entry], exists=lambda url: url in has))
+        self.assertTrue(entry["cover"].endswith("/1/portrait.png"))
+
+    def test_a_demo_without_a_cover_takes_the_cover_of_its_full_game(self):
+        entry = self.entry(3748900, parent=3530820)
+        parent_common = {"library_assets_full": {"library_capsule": {"image": {"english": "hash/library_600x900.jpg"}}}}
+        has = {refresh.image(3530820, "hash/library_600x900.jpg"), refresh.image(3748900, "library_hero.jpg")}
+        asked = []
+        mended = refresh.mend_artwork([entry], exists=lambda url: url in has, parents=lambda ids: asked.append(ids) or {3530820: {"common": parent_common}})
+        self.assertEqual(1, mended)
+        self.assertEqual([[3530820]], asked)
+        self.assertEqual(refresh.image(3530820, "hash/library_600x900.jpg"), entry["cover"])
+        self.assertTrue(entry["banner"].endswith("/3748900/library_hero.jpg"))
+
+    def test_its_own_older_cover_comes_before_the_one_of_its_full_game(self):
+        entry = self.entry(5, parent=6)
+        has = {refresh.image(5, "portrait.png"), refresh.image(5, "library_hero.jpg")}
+        refresh.mend_artwork([entry], exists=lambda url: url in has, parents=lambda ids: self.fail("the parent was not needed"))
+        self.assertTrue(entry["cover"].endswith("/5/portrait.png"))
+
+    def test_an_app_with_no_cover_anywhere_keeps_what_it_has(self):
+        entry = self.entry(7, parent=8)
+        before = dict(entry)
+        refresh.mend_artwork([entry], exists=lambda url: False, parents=lambda ids: {8: {"common": {}}})
+        self.assertEqual(before, entry)
+
+    def test_an_app_without_a_parent_and_without_a_file_keeps_what_it_has_and_asks_nobody(self):
+        entry = self.entry(9)
+        before = dict(entry)
+        refresh.mend_artwork([entry], exists=lambda url: False, parents=lambda ids: self.fail("no parent"))
+        self.assertEqual(before, entry)
+
+    def test_the_banner_of_a_demo_comes_from_its_full_game_when_it_has_none(self):
+        entry = self.entry(10, parent=11)
+        parent_common = {"library_assets_full": {"library_hero": {"image": {"english": "h/library_hero.jpg"}}}}
+        has = {refresh.image(11, "h/library_hero.jpg"), refresh.image(10, "portrait.png")}
+        refresh.mend_artwork([entry], exists=lambda url: url in has, parents=lambda ids: {11: {"common": parent_common}})
+        self.assertEqual(refresh.image(11, "h/library_hero.jpg"), entry["banner"])
