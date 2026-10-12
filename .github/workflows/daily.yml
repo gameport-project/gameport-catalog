@@ -29,6 +29,9 @@ jobs:
       - run: pip install -r requirements.txt
       - name: The tests of the rules
         run: python3 -m unittest -v
+      # What the catalog was before this run: the announcement of the new Android versions compares with it.
+      - name: Keep the catalog as it was
+        run: cp v1/catalog.json "$RUNNER_TEMP/previous-catalog.json"
       - name: Read Steam and write the catalog
         env:
           STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
@@ -47,6 +50,16 @@ jobs:
             git pull --rebase
             git push
           fi
+      # Tells the Discord channel of the new Android versions which games, demos, betas or applications became installable in this run. Skipped without the secret;
+      # a failure here changes nothing of the catalog, which is already written. DISCORD_NEW_GAMES_ROLE_ID (a variable of the repository) names the role to mention.
+      - name: Announce the new Android versions
+        continue-on-error: true
+        env:
+          DISCORD_NEW_GAMES_WEBHOOK: ${{ secrets.DISCORD_NEW_GAMES_WEBHOOK }}
+          DISCORD_NEW_GAMES_ROLE_ID: ${{ vars.DISCORD_NEW_GAMES_ROLE_ID }}
+        run: |
+          if [ -z "$DISCORD_NEW_GAMES_WEBHOOK" ]; then echo "DISCORD_NEW_GAMES_WEBHOOK is not set: nothing announced"; exit 0; fi
+          python3 announce_new.py "$RUNNER_TEMP/previous-catalog.json"
       # GitHub switches off the schedule of a public repository after 60 days without activity: this keeps it on.
       - name: Keep the schedule on
         env:

@@ -1,0 +1,30 @@
+name: Announcement test
+
+# A trial of the announcement of new Android versions: posts the newest apps of the catalog (three by default) on the channel of the webhook, marked "Test", with no
+# mention. Run by hand, to see what the real announcement looks like. Needs the secret DISCORD_NEW_GAMES_WEBHOOK.
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "How many apps to post (30 at most)"
+        default: "3"
+
+permissions:
+  contents: read
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Post the trial
+        env:
+          DISCORD_NEW_GAMES_WEBHOOK: ${{ secrets.DISCORD_NEW_GAMES_WEBHOOK }}
+          COUNT: ${{ github.event.inputs.count }}
+        run: |
+          if [ -z "$DISCORD_NEW_GAMES_WEBHOOK" ]; then echo "DISCORD_NEW_GAMES_WEBHOOK is not set: add it in the repository secrets"; exit 1; fi
+          python3 announce_new.py --test "${COUNT:-3}"

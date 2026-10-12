@@ -99,3 +99,15 @@ ITAD_API_KEY=... python3 backfill.py --limit 1500   # the past prices of what ha
 `STEAM_API_KEY` is a Steam Web API key (https://steamcommunity.com/dev/apikey), kept as a repository secret for the workflows. `ITAD_API_KEY` is the API key of an app made at https://isthereanydeal.com/apps/, also a repository secret: it is only for the past prices of the games and countries that have none (the OAuth client of that app is not used). Each key is only sent to the service it belongs to and is never written to a file.
 
 How it works: Steam's API lists every game and program but cannot filter on the platform. Each app is read with an anonymous Steam session (no account, no licence: the product info of public apps is public) and kept when it declares an Android depot. The store API then gives the texts, by batches, with a pause between calls because Steam answers `429` to a faster pace. The files are left alone when a read looks wrong (too many ids lost, far fewer apps than before, a language that cannot be read).
+
+## The announcement of new Android versions
+
+After each daily run, `announce_new.py` posts on a Discord channel the apps (games, demos, betas, applications) whose Android version became installable in that run. It is a list of cards, one for each app: its name as a link to Steam, its kind (game, demo, beta, app), VR or flat, and its cover (on the right of the card, as Discord lays it out). Discord shows ten cards to a message, thirty at most are posted, and only the first message notifies: the following ones are posted silently, so a long list is still one notification. It compares the catalog with the copy the workflow kept before the run, so a first run, or a run with no copy, announces nothing.
+
+To set it up, once:
+
+1. In Discord, make the channel (for example "new-android-games"; a channel of type "Announcement" lets servers and members follow it). In its settings, Integrations, Webhooks, make a webhook and copy its address.
+2. In the repository settings, Secrets and variables, Actions: add the secret `DISCORD_NEW_GAMES_WEBHOOK` with that address.
+3. To notify people, make a role (for example "Android news") that members can take, copy its number (Discord developer mode, "Copy role ID") and add it as the variable `DISCORD_NEW_GAMES_ROLE_ID`. Without it, the message is posted without a mention; people still choose how the channel notifies them.
+
+`python3 announce_new.py PREVIOUS.json` shows what would be posted and sends nothing.

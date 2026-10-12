@@ -1,1 +1,2 @@
 steam[client]>=1.4.4
+Pillow>=10.1
