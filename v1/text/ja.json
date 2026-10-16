@@ -35,6 +35,7 @@
 "1667":"ホラー",
 "1669":"MOD導入可能",
 "1676":"RTS",
+"1678":"戦争",
 "1681":"海賊",
 "1684":"ファンタジー",
 "1685":"協力プレイ",
@@ -285,7 +286,7 @@
 "1124160":"VR Giantsは、一人のVRプレイヤーと一人のゲームパッドプレイヤーが協力してプレイするローカル協力型VRゲームです。VRプレイヤーは巨人を操作し、スクリーンプレイヤーが操作する小人を保護しサポートします。小人プレイヤーは巨人の体をレベルの拡張として使用できます。",
 "1125240":"Ancient Dungeon VR is a fast-paced roguelite dungeon crawler built for VR. Explore procedurally generated dungeons, slash enemies, collect loot, and unlock upgrades in immersive physics-based combat. Play solo or co-op with up to 4 players.",
 "1177340":"Unification is about a cat chasing its own laser pointer into an ancient black hole engine.\r\nUnleash your cat instincts as Gumbot, tackling physics and critters alike! Leap and scramble up ledges, zoom with rocket parkour, shift gravity at will, and wield curious artifacts and dreamlike powers.",
-"1192900":"Step inside a colossal war machine and experience what it means to be a mech pilot. \r\n\r\nControl every switch, weapon, and system from the cockpit, customize your mech for battle, and outmaneuver rival pilots in tactical cross-platform multiplayer combat.",
+"1192900":"Climb into the cockpit of a 40-ton war machine. Built for VR, this mech simulator puts every switch, weapon, and system in your hands. Customize your mech, fight solo against bots, play offline, or face rival pilots in tactical 8v8 cross-platform combat.",
 "1266470":"🎣 リアルVRフィッシングの究極の体験を始めよう！\r\nリアルVRフィッシングで超リアルな環境を探索しよう。40の基本マップでリラックスし、DLCパックで日本の美しい釣りスポットを含む95の釣り場に冒険を広げましょう。基本ゲームで150種類以上の魚を、DLCで300種類以上を発見できます。穏やかな雰囲気の中で釣りの腕を磨きましょう。",
 "1294760":"HARD BULLETは物理ベースのアクションゲームです。ネオン輝く都市には敵が溢れ、通りに破壊をもたらします。スローモーション、膨大な武器庫、そして残忍な戦闘を駆使して生き残り、新しい武器をアンロックしましょう。サンドボックスモードとアリーナモードでスキルを磨き、次のRIDEに備えましょう。",
 "1340300":"今日からカンフーフィットネスの旅に出る覚悟はできてる？\r\n\r\n心と体を鍛え、史上最強のカンフーマスターになるための挑戦に乗り出そう！『クレイジーカンフー』で修行を開始して、反射神経を鍛え、健康な体を作り、究極のカンフーの達人になろう！",
@@ -351,6 +352,7 @@
 "3165710":"Saddle up, cowboy! Wild West Panic is a hyper-casual VR arcade shooter: grab a WANTED poster, hunt your target, and cash in the bounty. Replay endlessly to beat your high score, but whatever you do, don't shoot the innocent, or it'll cost you dearly! Have fun, bounty hunter!",
 "3168700":"Undress your femboy waiter in this original physics puzzler! An extended demo featuring eight stages!!! A kemono game, by kemono artists.",
 "3189340":"「Dungeons of Eternity」の果てなく続くファンタジー世界では、アクションや冒険がキミや仲間を待っている。勇敢な仲間たちと手を組み、\r\n貴重な戦利品を求めて闇をくまなく探検しながら、さまざまな武器を使って迫りくる魔獣の大群を撃破しよう。",
+"3384090":"Set up the battlefield with an ever growing list of units, vehicles, and emplacements! Then either join the battle as a plastic soldier or be life sized and tower over the chaos.",
 "3391450":"Free Livesが手がけるVR剣闘士シミュレーターの続編が登場！『GORN 2』で壮絶な戦いに挑め。",
 "3430260":"Hunt the corrupted Guardians and purge a dying world in Wrath: Aeon of Ruin VR, a brutal old-school FPS built in the legendary Quake engine and reimagined for virtual reality. With dual-wielding combat, physical reloading, and deadly artifacts at your command, the darkness doesn’t stand a chance.",
 "3471390":"ウサギの穴をくぐり抜けて、謎が渦巻く『エスケーピング・ワンダーランド』の世界へ飛び込みましょう！好奇心旺盛なモリーとともに、あの『不思議の国のアリス』の世界を巡る、新たな冒険に出かけましょう。上が下になって、左が右に、何もかもがあべこべで見た目通りではない魅惑的な世界の中で、難解な課題を解き明かしていきましょう。頭の体操と魔法、そして楽しいナンセンスに満ちた、楽しいゲームプレイのひと時をお楽しみください。モリーが本当は何から逃げているのか？―彼女の記憶を取り戻すのを手伝ってください。でも、本当にその覚悟はありますか？",
@@ -460,7 +462,6 @@
 "4919580":"A new roguelite twist on the classic arcade brick-breaker!\r\n\r\nProgress through levels to earn upgrades that will help you to get higher scores, progress further, and more!\r\n\r\nBut be careful! If you get a game over, you lose all of your upgrades!",
 "4922560":"「許容可能なリスク」の代償を描く大人向け恋愛ビジュアルノベル。Wayfarer社のロボタクシーが「あなたより安全」を謳った約束を裏切り、たった今ひとりの命を奪った。最高安全責任者コーマック・クエイドとして、あなたが埋めた真実の断片をそれぞれ握る三人の女——主席知覚エンジニアのマリット、市交通委員長オルラ、そして会社に濡れ衣を着せられた25歳のリモートオペレーター、タリア——と告白と共犯、そして真の原因を口にする代償によって編まれるロマンスを紡ぐ。連邦捜査が迫る。",
 "4929640":"合成メディアの巨大企業Vesselを舞台にした成人向けロマンス・ビジュアルノベル。チーフ・クリエイティブ・オフィサーEmory Sinclairとなり、真実を葬るために雇われた危機管理のフィクサー、自分の顔を取り戻すために戻ってきた女優、そして長く疎遠になった共同創業者との危険な三つのロマンスを同時に渡り歩け。同意なき画像スキャンダルが、あなたが築いたすべての事業、結婚、信頼を崩そうとする中で、愛か真実かの選択を迫られる。",
-"4934110":"SteamOS coming soon! Operate your Windows PC in VR with only your head. Built for people who can't use controllers, but useful to those who can! Go hands free in more casual experiences. Gaze-and-dwell cursor, radial menu, on-screen keyboard, for the SteamVR dashboard and your Windows desktop.",
 "4950560":"砂漠の街で、堕ちた王者が公然と\"強化\"されたスポーツ・サーキットを指導する。史上初のAscendant Gamesを前に、三人の危険な女性——敵対するライバル、\"クリーン\"な部外者、そして彼の物語を握る重役——と恋を交わせ。露骨な描写を含むアダルトビジュアルノベル。",
 "4955010":"絶滅種復活保護区を舞台にした成人向け恋愛ビジュアルノベル。飼育員アンセル・ウィアーとなり、世界公開イベントまで残された8週間で、ダイアウルフやフクロオオカミ、衰弱するマンモスの子Cloverを守ってください。研究、事業、抗議活動、動物福祉が衝突する中、遺伝学者フレイヤ、映像作家ロビン、牧場獣医シェイの一人を選び、Vestigeが命を守る場所なのか美しい檻なのかを決める、異なる物語と結末を体験します。",
 "4965030":"『不滅の逢瀬』は、豪華な長寿研究施設ペレニアルを舞台にした成人向け恋愛ビジュアルノベルです。医療責任者アンブローズ・ロックを導き、アラベラ、セシリア、ダイアナとの異なる3つの恋を経験しながら、操作された研究データ、隠された死、長寿の奇跡の裏側を調査してください。選択によって人間関係、エスケープ・ベロシティ・サミットの行方、最終的な結末が変化します。死、悲嘆、医療倫理、商品化された希望を扱い、露骨な性描写と裸体表現を含みます。愛と誠実さ、ペレニアルの未来のために何を犠牲にするのか、そして死を逃れることが本当に人生を増やすのか、それとも時間を延ばすだけなのかを決めてください。",
@@ -471,5 +472,6 @@
 "5117090":"皆既日食のあと外界から孤立したガリシアの村を舞台にした、大人向け恋愛ビジュアルノベル。3つの異なるルートで選択を重ね、住民同士の対立を乗り越えながら、ブルナ、サベラ、カンデラのいずれかと関係を築きましょう。崩落した道路、限られた物資、強まる世間の圧力の中、あなたの決断がヌノの恋とロウレイラの未来を左右します。",
 "5136190":"組合委員長ローワン・ペトラックとなり、4,200人の客室乗務員を率いて激動の航空会社ストライキに挑め。24日間にわたり、世論の圧力、メディア戦、経済的困窮、組合内部の分裂、厳しい交渉を乗り越えよう。異なる力関係を描く3つの恋愛ルートでは、忠誠、信用、指導者としての責任、個人的な感情に関する選択がローカル14の未来と複数の結末を決める。数千人の仲間を最後まで団結させ、労働条件を変えられるか、それとも圧力の中で信頼と関係を失うかは、あなたの決断次第だ。",
 "5164070":"オソー川流域では、放水路の役割を誰もが知っている。1937年の地図で、コーデルを含む8万4千エーカーは、下流の都市を洪水から守るため、必要なら犠牲にされる区域と定められた。いま川は急速に増水し、ヒューズプラグ堤防を作動させる時が迫る。洪水対策責任者ジークは一軒ずつ避難を告げ、職務、故郷、そして三人の女性への思いの間で選ばなければならない。土のう積み、水質監視、家畜避難が続く緊迫の11日間に、制度的な決断の代償、立ち去れる者の特権、堤防の向こうにも閉じ込められない愛が浮かび上がる。現実的な防災手順を背景にした、大人向けの災害ロマンス・ビジュアルノベル。",
-"5178250":"11週間で略奪された公使館を再開し、今なお過去が求める代償こそ最も困難な交渉だと知ってください。戦後のドゥラルへ戻った外交官イヴォとして、信任状、返還請求、事件記録、修復工事の間で選択を重ねます。禁じられた魅力、帰郷者の記憶、敵意に満ちた再会を描く3つの独立した恋愛ルートは、それぞれ異なる圧力、危険、決断、結果をもたらします。義務と欲望、制度と個人の間で立場を定め、あなたを待たなかった街で外交官邸を一室ずつ再建してください。露骨な成人向けシーンが含まれます。"
+"5178250":"11週間で略奪された公使館を再開し、今なお過去が求める代償こそ最も困難な交渉だと知ってください。戦後のドゥラルへ戻った外交官イヴォとして、信任状、返還請求、事件記録、修復工事の間で選択を重ねます。禁じられた魅力、帰郷者の記憶、敵意に満ちた再会を描く3つの独立した恋愛ルートは、それぞれ異なる圧力、危険、決断、結果をもたらします。義務と欲望、制度と個人の間で立場を定め、あなたを待たなかった街で外交官邸を一室ずつ再建してください。露骨な成人向けシーンが含まれます。",
+"5188980":"成人向け恋愛ビジュアルノベルで、48日間の厳重な隔離生活を乗り越えよう。誰も作成していない試験問題の流出を調査し、用紙保安責任者として組織の圧力に耐えながら、ドジンを異なる未来へ導く三人の女性と向き合う。携帯電話の提出、監視される郵便、記録される通話の中で、すべての聴取と選択が調査と関係を変える。三つの完全な恋愛ルートから一つを選び、彼が誰と柵の外へ出るのかを決めよう。各ルートには明示的な成人向けシーンを収録。"
 }}

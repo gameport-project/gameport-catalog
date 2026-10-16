@@ -35,6 +35,7 @@
 "1667":"Τρόμος",
 "1669":"Τροποποιήσιμο",
 "1676":"Στρατηγική πραγμ. χρόνου",
+"1678":"Πόλεμος",
 "1681":"Πειρατές",
 "1684":"Φαντασία",
 "1685":"Συνεργατικό",
@@ -285,7 +286,7 @@
 "1124160":"VR Giants is a local/online co-op VR game in which one VR player and one screen player work together. The VR player controls a giant and must protect and support the tiny player who is controlled by the screen player. The tiny player can use the body of the giant as an extension of the level.",
 "1125240":"Ancient Dungeon VR is a fast-paced roguelite dungeon crawler built for VR. Explore procedurally generated dungeons, slash enemies, collect loot, and unlock upgrades in immersive physics-based combat. Play solo or co-op with up to 4 players.",
 "1177340":"Unification is about a cat chasing its own laser pointer into an ancient black hole engine.\r\nUnleash your cat instincts as Gumbot, tackling physics and critters alike! Leap and scramble up ledges, zoom with rocket parkour, shift gravity at will, and wield curious artifacts and dreamlike powers.",
-"1192900":"Step inside a colossal war machine and experience what it means to be a mech pilot. \r\n\r\nControl every switch, weapon, and system from the cockpit, customize your mech for battle, and outmaneuver rival pilots in tactical cross-platform multiplayer combat.",
+"1192900":"Climb into the cockpit of a 40-ton war machine. Built for VR, this mech simulator puts every switch, weapon, and system in your hands. Customize your mech, fight solo against bots, play offline, or face rival pilots in tactical 8v8 cross-platform combat.",
 "1266470":"Real VR Fishing recreates real-world locations. Start across 40 maps, then expand to 95 fishing spots and 300+ species through DLC. Cast, feel every bite, and build your own aquarium — solo or with up to 3 friends. Pure, relaxing catch-and-release, in VR.",
 "1294760":"Το HARD BULLET είναι ένα παιχνίδι δράσης βασισμένο στη φυσική, όπου οι εχθροί κατακλύζουν τη νέον-φωτισμένη πόλη φέρνοντας καταστροφή στους δρόμους της. Χρησιμοποιήστε αργή κίνηση, ένα τεράστιο οπλοστάσιο και βάναυση μάχη για να επιβιώσετε και να ξεκλειδώσετε νέα όπλα. Προετοιμαστείτε για την επόμενη RIDE, τελειοποιώντας τις δεξιότητές σας στις λειτουργίες Sandbox και Arena.",
 "1340300":"Are you ready to start your KUNG FU FITNESS journey today?\r\n\r\nWith a focused mind and a strong body, embark on the challenge to become the greatest Kung Fu master of all time! Join Crazy Kung Fu to start your training, improve your reflexes, get fit, and become the ultimate Kung Fu force!",
@@ -351,6 +352,7 @@
 "3165710":"Saddle up, cowboy! Wild West Panic is a hyper-casual VR arcade shooter: grab a WANTED poster, hunt your target, and cash in the bounty. Replay endlessly to beat your high score, but whatever you do, don't shoot the innocent, or it'll cost you dearly! Have fun, bounty hunter!",
 "3168700":"Undress your femboy waiter in this original physics puzzler! An extended demo featuring eight stages!!! A kemono game, by kemono artists.",
 "3189340":"Endless fantasy action and adventure await you and your friends in Dungeons of Eternity. Hack-n-slash takes on a new meaning in VR: swing swords, throw axes, use bows, wield magic staffs, and more to make it out alive. Become the most powerful adventurer in this blockbuster VR experience!\r\n\r\n",
+"3384090":"Set up the battlefield with an ever growing list of units, vehicles, and emplacements! Then either join the battle as a plastic soldier or be life sized and tower over the chaos.",
 "3391450":"Rejoice in the glory of battle in GORN 2, a massive sequel to Free Lives' brutal VR gladiator simulator.",
 "3430260":"Hunt the corrupted Guardians and purge a dying world in Wrath: Aeon of Ruin VR, a brutal old-school FPS built in the legendary Quake engine and reimagined for virtual reality. With dual-wielding combat, physical reloading, and deadly artifacts at your command, the darkness doesn’t stand a chance.",
 "3471390":"Tumble topsy-turvy down the rabbit hole into the fantastical frolic of Escaping Wonderland, where whimsy waltzes with wonder and riddles run riot! Join the ever-curious Molly on a brand-new adventure through the beloved world of Alice in Wonderland.",
@@ -460,7 +462,6 @@
 "4919580":"A new roguelite twist on the classic arcade brick-breaker!\r\n\r\nProgress through levels to earn upgrades that will help you to get higher scores, progress further, and more!\r\n\r\nBut be careful! If you get a game over, you lose all of your upgrades!",
 "4922560":"An adult romance visual novel set inside a robotaxi company whose \"safer than you\" promise just killed someone. As Chief Safety Officer Cormac Quade, romance three women—engineer, commissioner, or blamed operator—each holding a piece of the truth you helped bury.",
 "4929640":"An adult romance visual novel set inside a synthetic-media giant. As Chief Creative Officer Emory Sinclair, navigate three dangerous romances—a crisis fixer, a returned actress, and your estranged co-founder—while a consent scandal threatens to collapse everything you built.",
-"4934110":"SteamOS coming soon! Operate your Windows PC in VR with only your head. Built for people who can't use controllers, but useful to those who can! Go hands free in more casual experiences. Gaze-and-dwell cursor, radial menu, on-screen keyboard, for the SteamVR dashboard and your Windows desktop.",
 "4950560":"A ruined champion coaches an openly enhanced sports circuit in the Mojave desert. As the inaugural Ascendant Games approach, romance three dangerous women: a hostile rival, a clean outsider, and the executive who owns his story. Adult visual novel with explicit content.",
 "4955010":"An adult romance visual novel set at a de-extinction preserve. As keeper Ansel Weir, face an eight-week countdown to a global unveiling, protect engineered animals, and choose a romance with geneticist Freya, filmmaker Robin, or rancher-vet Shea.",
 "4965030":"Immortal Tryst is an adult romance visual novel set at a luxury longevity campus. Guide physician Ambrose Locke through three romance routes, investigate the secrets behind Perennial's miracle, make choices with lasting consequences, and confront the price of outrunning mortality.",
@@ -471,5 +472,6 @@
 "5117090":"An adult romance visual novel set in a Galician village stranded after a total eclipse. Make choices across three distinct routes, navigate community conflict, and pursue relationships with Bruna, Sabela, or Candela as Loureira decides its future.",
 "5136190":"Lead 4,200 cabin crew through a volatile airline strike as union president Rowan Petrak. Navigate public pressure, hard negotiations, and three distinct romance routes where loyalty, credibility, and personal choices shape multiple endings.",
 "5164070":"In the Ossaw River basin, everyone has always known what the floodway is for: eighty-four thousand acres—Cordell included—were marked on a 1937 map as the ground that gets sacrificed so a city downstream never has to drown.",
-"5178250":"Reopen a looted legation in eleven weeks—and discover that the hardest thing to negotiate is what the past still costs. Choose from three distinct romance routes, each escalating under different pressures, stakes, and consequences."
+"5178250":"Reopen a looted legation in eleven weeks—and discover that the hardest thing to negotiate is what the past still costs. Choose from three distinct romance routes, each escalating under different pressures, stakes, and consequences.",
+"5188980":"Navigate a 48-day security lockdown in this adult romance visual novel. Investigate a leaked exam question, manage institutional pressure, and choose between three relationship routes as Han Do-jin decides what—and whom—he will carry beyond the gate."
 }}

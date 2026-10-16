@@ -35,6 +35,7 @@
 "1667":"공포",
 "1669":"모드 가능",
 "1676":"실시간 전략",
+"1678":"전쟁",
 "1681":"해적",
 "1684":"판타지",
 "1685":"협동",
@@ -285,7 +286,7 @@
 "1124160":"VR Giants is a local/online co-op VR game in which one VR player and one screen player work together. The VR player controls a giant and must protect and support the tiny player who is controlled by the screen player. The tiny player can use the body of the giant as an extension of the level.",
 "1125240":"Ancient Dungeon VR is a fast-paced roguelite dungeon crawler built for VR. Explore procedurally generated dungeons, slash enemies, collect loot, and unlock upgrades in immersive physics-based combat. Play solo or co-op with up to 4 players.",
 "1177340":"Unification is about a cat chasing its own laser pointer into an ancient black hole engine.\r\nUnleash your cat instincts as Gumbot, tackling physics and critters alike! Leap and scramble up ledges, zoom with rocket parkour, shift gravity at will, and wield curious artifacts and dreamlike powers.",
-"1192900":"Step inside a colossal war machine and experience what it means to be a mech pilot. \r\n\r\nControl every switch, weapon, and system from the cockpit, customize your mech for battle, and outmaneuver rival pilots in tactical cross-platform multiplayer combat.",
+"1192900":"Climb into the cockpit of a 40-ton war machine. Built for VR, this mech simulator puts every switch, weapon, and system in your hands. Customize your mech, fight solo against bots, play offline, or face rival pilots in tactical 8v8 cross-platform combat.",
 "1266470":"🎣리얼 VR 피싱의 초현실적인 낚시터에서, 모든 것을 잊고 몰입해보세요!\r\n\r\n리얼 VR 피싱은 실제 낚시터를 옮겨둔 것 같은 40개의 기본 스테이지와 55개의 확장팩 낚시 명소에서 실제와 같은 낚시 경험을 하실 수 있습니다.\r\n\r\n150종에서 300종의 물고기를 자연의 편안한 환경에서 낚시 해보세요!\r\n\r\n이 세상 어느 곳에서도 해볼 수 없었던 진귀한 경험이 되실 겁니다.",
 "1294760":"HARD BULLET은 네온 불빛 도시를 파괴하는 적들로 가득 찬 물리 기반 액션 게임입니다. 슬로우 모션, 방대한 무기고, 잔혹한 전투를 사용하여 살아남고 새로운 무기를 잠금 해제하세요. 샌드박스와 아레나 모드에서 기술을 연마하여 다음 RIDE를 준비하세요.",
 "1340300":"오늘 쿵푸 피트니스 여정을 떠날 준비가 되셨나요?\r\n\r\n집중된 정신과 강인한 신체로 도전하여 최고의 쿵푸 마스터가 되세요! 크레이지 쿵푸와 함께 훈련을 시작하고, 반사신경을 향상시키고, 몸을 다듬고 위대한 쿵푸의 대가가 되세요!",
@@ -351,6 +352,7 @@
 "3165710":"Saddle up, cowboy! Wild West Panic is a hyper-casual VR arcade shooter: grab a WANTED poster, hunt your target, and cash in the bounty. Replay endlessly to beat your high score, but whatever you do, don't shoot the innocent, or it'll cost you dearly! Have fun, bounty hunter!",
 "3168700":"Undress your femboy waiter in this original physics puzzler! An extended demo featuring eight stages!!! A kemono game, by kemono artists.",
 "3189340":"Dungeons of Eternity에서 친구들과 함께 마음껏 판타지 액션과 모험을 즐기세요. 다른 영웅들과 함께 힘을 합쳐\r\n다양한 무기로 길을 가로막는 몬스터 무리를 물리치면서 어두운 구석구석을 탐험하고 귀중한 전리품을 찾으세요.",
+"3384090":"Set up the battlefield with an ever growing list of units, vehicles, and emplacements! Then either join the battle as a plastic soldier or be life sized and tower over the chaos.",
 "3391450":"GORN 2에서 펼쳐지는 대격전의 영광에 흠뻑 젖어라. Free Lives가 선사하는 잔혹한 VR 검투사 시뮬레이터의 어마어마한 속편!",
 "3430260":"Hunt the corrupted Guardians and purge a dying world in Wrath: Aeon of Ruin VR, a brutal old-school FPS built in the legendary Quake engine and reimagined for virtual reality. With dual-wielding combat, physical reloading, and deadly artifacts at your command, the darkness doesn’t stand a chance.",
 "3471390":"수수께끼가 넘쳐나는 에스케이핑 원더랜드의 토끼굴 속으로 뛰어드세요! 호기심 많은 몰리와 함께 모두가 사랑하는 이상한 나라의 앨리스의 세계 속으로 새로운 모험을 떠나세요. 위아래와 좌우가 뒤집히고 보이는 것이 다가 아닌 마법처럼 황홀한 풍경 속에서 복잡한 퍼즐을 푸세요. 두뇌를 자극하는 문제, 마법, 유쾌한 넌센스로 가득한 게임 플레이를 몇 시간 동안 즐기세요. 몰리가 무엇으로부터 도망치려고 하는지 알아내고 몰리가 기억을 되찾을 수 있게 도와주세요. 그럴 용기가 있다면 말이죠!",
@@ -460,7 +462,6 @@
 "4919580":"A new roguelite twist on the classic arcade brick-breaker!\r\n\r\nProgress through levels to earn upgrades that will help you to get higher scores, progress further, and more!\r\n\r\nBut be careful! If you get a game over, you lose all of your upgrades!",
 "4922560":"\"허용 가능한 위험\"의 대가에 관한 성인 로맨스 비주얼 노벨. Wayfarer의 로보택시가 \"당신보다 안전하다\"던 약속을 깨고 방금 한 사람을 죽였다. 최고안전책임자 코맥 퀘이드가 되어, 당신이 묻는 데 일조한 진실의 조각을 각기 다르게 쥔 세 여자—수석 인식 엔지니어 마리트, 시 교통위원장 오를라, 그리고 회사가 희생양으로 택한 25세 원격 오퍼레이터 탈리아—와 고백과 공모, 그리고 참된 원인을 마침내 말하는 대가로 빚어진 세 갈래의 로맨스를 나누세요.",
 "4929640":"합성 미디어 대기업 Vessel 내부를 배경으로 한 성인 로맨스 비주얼 노벨. 최고 크리에이티브 책임자 Emory Sinclair가 되어, 진실을 묻기 위해 고용된 위기 관리 전문가, 자신의 얼굴을 되찾기 위해 돌아온 배우, 그리고 오랫동안 소원해진 공동 창업자와의 위험한 세 로맨스를 오갑니다. 비동의 이미지 스캔들이 당신이 세운 모든 것과 관계를 무너뜨리려 합니다.",
-"4934110":"SteamOS coming soon! Operate your Windows PC in VR with only your head. Built for people who can't use controllers, but useful to those who can! Go hands free in more casual experiences. Gaze-and-dwell cursor, radial menu, on-screen keyboard, for the SteamVR dashboard and your Windows desktop.",
 "4950560":"몰락한 챔피언이 모하비 사막에서 공공연히 '강화된' 스포츠 서킷을 지도한다. 사상 첫 Ascendant Games를 앞두고 세 명의 위험한 여자 — 적대적인 라이벌, '깨끗한' 외부인, 그리고 그의 이야기를 소유한 임원 — 와 로맨스를 펼치세요. 노골적인 콘텐츠의 성인 비주얼 노벨.",
 "4955010":"멸종 복원 보호구역을 무대로 한 성인 로맨스 비주얼 노벨입니다. 사육사 안셀 위어가 되어 전 세계 공개 행사까지 남은 8주 동안 다이어울프, 주머니늑대와 병약한 새끼 매머드 클로버를 돌보세요. 연구와 상업, 동물 복지의 충돌 속에서 유전학자 프레이야, 다큐멘터리 감독 로빈, 목장 수의사 셰이 중 한 사람을 선택하고, 베스티지가 보호구역인지 아름다운 우리인지 결정할 서로 다른 이야기와 결말을 만나세요.",
 "4965030":"불멸의 밀회는 호화 장수 연구 캠퍼스 페레니얼을 배경으로 한 성인 로맨스 비주얼 노벨입니다. 의료 책임자 앰브로즈 로크를 이끌어 아라벨라, 세실리아, 다이애나와 서로 다른 세 가지 사랑을 경험하고, 조작된 연구 수치와 감춰진 죽음 뒤에 숨은 기적의 진실을 조사하세요. 선택은 관계와 정상 회담, 최종 결말을 바꿉니다. 죽음, 슬픔, 의료 윤리와 상품화된 희망을 다루며 노골적인 성행위 장면과 노출을 포함합니다. 사랑과 정직, 페레니얼의 미래를 위해 무엇을 희생할지 결정하세요.",
@@ -471,5 +472,6 @@
 "5117090":"개기일식 뒤 외부와 단절된 갈리시아 마을을 배경으로 한 성인 로맨스 비주얼 노벨입니다. 서로 다른 세 루트에서 선택을 내리고 공동체의 갈등을 헤쳐 나가며 브루나, 사벨라 또는 칸델라와 관계를 쌓으세요. 무너진 도로와 부족한 자원, 거세지는 주민들의 압박 속에서 당신의 선택은 누노의 사랑과 루레이라의 미래를 바꿉니다.",
 "5136190":"노조 위원장 로언 페트락이 되어 4,200명의 객실 승무원을 이끌고 격렬한 항공사 파업에 나서세요. 24일 동안 대중의 압박과 언론전, 경제적 위기, 내부 분열과 힘겨운 협상을 견뎌야 합니다. 서로 다른 권력 관계를 다루는 세 가지 로맨스 루트에서 내리는 충성, 신뢰, 지도력과 개인적 감정에 관한 선택이 제14지부의 미래와 여러 결말을 결정합니다. 파업을 끝까지 지켜 내고 노동 조건을 바꿀 것인지, 아니면 압박 속에서 신뢰와 관계를 잃을 것인지 당신의 결정에 달려 있습니다.",
 "5164070":"오소 강 유역의 사람들은 방수로의 목적을 안다. 1937년 지도에서 코델을 포함한 8만 4천 에이커는 하류 도시를 지키기 위해 필요하면 희생해야 할 땅으로 지정되었다. 이제 강물이 빠르게 불어나고 퓨즈 플러그 제방을 가동할 순간이 다가온다. 홍수 대응 감독관 지크는 집집마다 대피를 알리며 의무와 고향, 서로 다른 세 여자를 향한 마음 사이에서 선택해야 한다. 모래주머니 작업과 가축 대피가 이어지는 긴박한 11일 동안 희생의 대가와 제방 뒤에도 가둘 수 없는 사랑이 드러난다.",
-"5178250":"11주 안에 약탈당한 공사관을 다시 열고, 과거가 요구하는 대가가 가장 어려운 협상임을 확인하세요. 전후의 두랄로 돌아온 외교관 이보가 되어 신임장, 반환 청구, 사건 일지와 복구 공사 사이에서 선택합니다. 금지된 끌림, 귀환자의 기억, 적대적 재회를 중심으로 한 세 연애 경로는 각각 다른 압력과 위험, 결정과 결과를 제공합니다. 의무와 욕망, 제도와 개인 사이에서 입장을 정하고 외교 관저를 방마다 재건하세요. 노골적인 성인 장면이 포함됩니다."
+"5178250":"11주 안에 약탈당한 공사관을 다시 열고, 과거가 요구하는 대가가 가장 어려운 협상임을 확인하세요. 전후의 두랄로 돌아온 외교관 이보가 되어 신임장, 반환 청구, 사건 일지와 복구 공사 사이에서 선택합니다. 금지된 끌림, 귀환자의 기억, 적대적 재회를 중심으로 한 세 연애 경로는 각각 다른 압력과 위험, 결정과 결과를 제공합니다. 의무와 욕망, 제도와 개인 사이에서 입장을 정하고 외교 관저를 방마다 재건하세요. 노골적인 성인 장면이 포함됩니다.",
+"5188980":"성인 로맨스 비주얼 노벨에서 48일간의 보안 합숙을 견디세요. 아무도 작성하지 않은 시험 문제가 모의고사에 나타나고, 한도진은 시험지 보안 책임자로서 유출의 진실을 조사합니다. 휴대전화 반납, 감시되는 우편, 기록되는 통화와 조직의 압박 속에서 세 여인이 그를 서로 다른 미래로 이끕니다. 모든 면담과 보안 판단, 감정의 선택이 조사와 관계를 바꿉니다. 서로 다른 갈등과 결말을 지닌 세 개의 완전한 연애 루트 중 하나를 선택해 도진이 누구와 함께 울타리 밖으로 나갈지 결정하세요. 각 루트에는 명시적인 성인 장면이 포함됩니다."
 }}

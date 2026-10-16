@@ -35,6 +35,7 @@
 "1667":"Horreur",
 "1669":"Modable",
 "1676":"Stratégie en temps réel",
+"1678":"Guerre",
 "1681":"Pirates",
 "1684":"Fantasy",
 "1685":"Coop",
@@ -285,7 +286,7 @@
 "1124160":"VR Giants is a local/online co-op VR game in which one VR player and one screen player work together. The VR player controls a giant and must protect and support the tiny player who is controlled by the screen player. The tiny player can use the body of the giant as an extension of the level.",
 "1125240":"Ancient Dungeon VR is a fast-paced roguelite dungeon crawler built for VR. Explore procedurally generated dungeons, slash enemies, collect loot, and unlock upgrades in immersive physics-based combat. Play solo or co-op with up to 4 players.",
 "1177340":"Unification is about a cat chasing its own laser pointer into an ancient black hole engine.\r\nUnleash your cat instincts as Gumbot, tackling physics and critters alike! Leap and scramble up ledges, zoom with rocket parkour, shift gravity at will, and wield curious artifacts and dreamlike powers.",
-"1192900":"Step inside a colossal war machine and experience what it means to be a mech pilot. \r\n\r\nControl every switch, weapon, and system from the cockpit, customize your mech for battle, and outmaneuver rival pilots in tactical cross-platform multiplayer combat.",
+"1192900":"Climb into the cockpit of a 40-ton war machine. Built for VR, this mech simulator puts every switch, weapon, and system in your hands. Customize your mech, fight solo against bots, play offline, or face rival pilots in tactical 8v8 cross-platform combat.",
 "1266470":"🎣 Plongez dans l'expérience Real VR Pêche !\r\nExplorez des environnements ultra-réalistes avec Real VR Pêche. Détendez-vous dans 40 cartes de base et étendez votre aventure à 95 lieux avec les DLC. Découvrez 150+ espèces de poissons dans le jeu de base et plus de 300 avec les DLC.",
 "1294760":"HARD BULLET est un jeu d'action basé sur la physique, où les ennemis inondent la ville illuminée au néon, semant la destruction dans ses rues. Utilisez le ralenti, un arsenal énorme et des combats brutaux pour survivre et débloquer de nouvelles armes. Préparez-vous pour le prochain RIDE en maîtrisant vos compétences dans les modes Sandbox et Arène...",
 "1340300":"Êtes-vous prêt à vous lancer dans une aventure de FITNESS KUNG FU ?\r\n\r\nLancez Crazy Kung Fu pour commencer votre entraînement, améliorer vos réflexes, faire du sport et devenir un génie du Kung Fu!",
@@ -351,6 +352,7 @@
 "3165710":"Saddle up, cowboy! Wild West Panic is a hyper-casual VR arcade shooter: grab a WANTED poster, hunt your target, and cash in the bounty. Replay endlessly to beat your high score, but whatever you do, don't shoot the innocent, or it'll cost you dearly! Have fun, bounty hunter!",
 "3168700":"Undress your femboy waiter in this original physics puzzler! An extended demo featuring eight stages!!! A kemono game, by kemono artists.",
 "3189340":"Dans Dungeons of Eternity, participez avec vos amis à une épopée fantastique. Assemblez un groupe de héros,\r\nexplorez chaque recoin en quête de butin et employez diverses armes pour écraser les hordes de monstres.",
+"3384090":"Set up the battlefield with an ever growing list of units, vehicles, and emplacements! Then either join the battle as a plastic soldier or be life sized and tower over the chaos.",
 "3391450":"Couvrez-vous de gloire dans GORN 2, la suite épique du simulateur de combats de gladiateurs en VR de Free Lives.",
 "3430260":"Hunt the corrupted Guardians and purge a dying world in Wrath: Aeon of Ruin VR, a brutal old-school FPS built in the legendary Quake engine and reimagined for virtual reality. With dual-wielding combat, physical reloading, and deadly artifacts at your command, the darkness doesn’t stand a chance.",
 "3471390":"Laissez-vous emporter par Escaping Wonderland et son tourbillon fantastique où se mêlent le merveilleux, l’inimaginable et les jeux de mots ! Embarquez pour une toute nouvelle aventure dans l’univers tant aimé d’Alice au pays des merveilles aux côtés de la curieuse Molly.",
@@ -460,7 +462,6 @@
 "4919580":"A new roguelite twist on the classic arcade brick-breaker!\r\n\r\nProgress through levels to earn upgrades that will help you to get higher scores, progress further, and more!\r\n\r\nBut be careful! If you get a game over, you lose all of your upgrades!",
 "4922560":"Un visual novel romantique pour adultes dans une entreprise de robotaxis dont la promesse « plus sûr que vous » vient de tuer quelqu'un. Directeur de la Sécurité Cormac Quade, courtisez trois femmes détenant chacune un fragment de la vérité que vous avez enterrée.",
 "4929640":"Un roman visuel de romance adulte au cœur d'un géant des médias synthétiques. Dans la peau du directeur créatif Emory Sinclair, naviguez entre trois romances dangereuses — une régleuse de crise, une actrice de retour et votre cofondatrice — pendant qu'un scandale de consentement menace tout.",
-"4934110":"SteamOS coming soon! Operate your Windows PC in VR with only your head. Built for people who can't use controllers, but useful to those who can! Go hands free in more casual experiences. Gaze-and-dwell cursor, radial menu, on-screen keyboard, for the SteamVR dashboard and your Windows desktop.",
 "4950560":"Un champion déchu entraîne un circuit sportif ouvertement augmenté dans le désert Mojave. À l'approche des premiers Ascendant Games, séduisez trois femmes dangereuses : une rivale hostile, une outsider « propre » et la dirigeante qui possède son histoire. Visual novel adulte au contenu explicite.",
 "4955010":"Un visual novel romantique pour adultes dans une réserve de désextinction. Incarnez le gardien Ansel Weir durant les huit semaines précédant une présentation mondiale, protégez des animaux conçus en laboratoire et choisissez Freya, Robin ou Shea.",
 "4965030":"Rendez-vous immortel est un visual novel romantique pour adultes situé dans un luxueux campus dédié à la longévité. Guidez le médecin Ambrose Locke à travers trois romances, enquêtez sur le miracle de Perennial et affrontez le prix à payer pour échapper à la mort.",
@@ -471,5 +472,6 @@
 "5117090":"Visual novel romantique pour adultes situé dans un village galicien isolé après une éclipse totale. Faites des choix dans trois parcours distincts, affrontez les tensions de la communauté et nouez une relation avec Bruna, Sabela ou Candela tandis que Loureira décide de son avenir.",
 "5136190":"Dirigez 4 200 membres du personnel navigant dans une grève aérienne explosive en incarnant le syndicaliste Rowan Petrak. Affrontez pression publique, négociations difficiles et trois romances où loyauté, crédibilité et choix personnels façonnent plusieurs fins.",
 "5164070":"Dans le bassin de la rivière Ossaw, chacun connaît le rôle du déversoir: quatre-vingt-quatre mille acres, Cordell comprise, ont été désignés dès 1937 comme zone à sacrifier afin que la ville en aval ne soit jamais engloutie.",
-"5178250":"Rouvrez en onze semaines une légation pillée et découvrez que le passé est la chose la plus difficile à négocier. Choisissez parmi trois romances distinctes, chacune soumise à ses propres pressions, enjeux et conséquences."
+"5178250":"Rouvrez en onze semaines une légation pillée et découvrez que le passé est la chose la plus difficile à négocier. Choisissez parmi trois romances distinctes, chacune soumise à ses propres pressions, enjeux et conséquences.",
+"5188980":"Traversez un confinement de sécurité de 48 jours dans ce visual novel romantique pour adultes. Enquêtez sur la fuite d’une question d’examen, affrontez la pression de l’Institut et choisissez l’une des trois relations qui décideront avec qui Han Do-jin franchira la grille."
 }}

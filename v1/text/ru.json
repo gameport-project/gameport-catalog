@@ -35,6 +35,7 @@
 "1667":"Хоррор",
 "1669":"Поддержка модификаций",
 "1676":"Стратегия в реальном времени",
+"1678":"Война",
 "1681":"Пираты",
 "1684":"Фэнтези",
 "1685":"Кооператив",
@@ -285,7 +286,7 @@
 "1124160":"VR Giants is a local/online co-op VR game in which one VR player and one screen player work together. The VR player controls a giant and must protect and support the tiny player who is controlled by the screen player. The tiny player can use the body of the giant as an extension of the level.",
 "1125240":"Ancient Dungeon VR is a fast-paced roguelite dungeon crawler built for VR. Explore procedurally generated dungeons, slash enemies, collect loot, and unlock upgrades in immersive physics-based combat. Play solo or co-op with up to 4 players.",
 "1177340":"Unification is about a cat chasing its own laser pointer into an ancient black hole engine.\r\nUnleash your cat instincts as Gumbot, tackling physics and critters alike! Leap and scramble up ledges, zoom with rocket parkour, shift gravity at will, and wield curious artifacts and dreamlike powers.",
-"1192900":"Step inside a colossal war machine and experience what it means to be a mech pilot. \r\n\r\nControl every switch, weapon, and system from the cockpit, customize your mech for battle, and outmaneuver rival pilots in tactical cross-platform multiplayer combat.",
+"1192900":"Climb into the cockpit of a 40-ton war machine. Built for VR, this mech simulator puts every switch, weapon, and system in your hands. Customize your mech, fight solo against bots, play offline, or face rival pilots in tactical 8v8 cross-platform combat.",
 "1266470":"Real VR Fishing recreates real-world locations. Start across 40 maps, then expand to 95 fishing spots and 300+ species through DLC. Cast, feel every bite, and build your own aquarium — solo or with up to 3 friends. Pure, relaxing catch-and-release, in VR.",
 "1294760":"HARD BULLET — это экшен-игра, основанная на физике, где враги наводняют залитый неоном город, принося разрушение на его улицы. Используйте замедление, огромный арсенал, чтобы выжить и разблокировать новое оружие. Подготовьтесь к следующему RIDE, оттачивая свои навыки в режимах «Песочница» и «Арена».",
 "1340300":"Are you ready to start your KUNG FU FITNESS journey today?\r\n\r\nWith a focused mind and a strong body, embark on the challenge to become the greatest Kung Fu master of all time! Join Crazy Kung Fu to start your training, improve your reflexes, get fit, and become the ultimate Kung Fu force!",
@@ -351,6 +352,7 @@
 "3165710":"Saddle up, cowboy! Wild West Panic is a hyper-casual VR arcade shooter: grab a WANTED poster, hunt your target, and cash in the bounty. Replay endlessly to beat your high score, but whatever you do, don't shoot the innocent, or it'll cost you dearly! Have fun, bounty hunter!",
 "3168700":"Undress your femboy waiter in this original physics puzzler! An extended demo featuring eight stages!!! A kemono game, by kemono artists.",
 "3189340":"Endless fantasy action and adventure await you and your friends in Dungeons of Eternity. Hack-n-slash takes on a new meaning in VR: swing swords, throw axes, use bows, wield magic staffs, and more to make it out alive. Become the most powerful adventurer in this blockbuster VR experience!\r\n\r\n",
+"3384090":"Set up the battlefield with an ever growing list of units, vehicles, and emplacements! Then either join the battle as a plastic soldier or be life sized and tower over the chaos.",
 "3391450":"Доберитесь до вершины славы на гладиаторской арене в GORN 2, продолжении нашумевшей VR-игры от студии Free Lives.",
 "3430260":"Hunt the corrupted Guardians and purge a dying world in Wrath: Aeon of Ruin VR, a brutal old-school FPS built in the legendary Quake engine and reimagined for virtual reality. With dual-wielding combat, physical reloading, and deadly artifacts at your command, the darkness doesn’t stand a chance.",
 "3471390":"Tumble topsy-turvy down the rabbit hole into the fantastical frolic of Escaping Wonderland, where whimsy waltzes with wonder and riddles run riot! Join the ever-curious Molly on a brand-new adventure through the beloved world of Alice in Wonderland.",
@@ -460,7 +462,6 @@
 "4919580":"A new roguelite twist on the classic arcade brick-breaker!\r\n\r\nProgress through levels to earn upgrades that will help you to get higher scores, progress further, and more!\r\n\r\nBut be careful! If you get a game over, you lose all of your upgrades!",
 "4922560":"Взрослая визуальная новелла-романс о компании робо-такси, чьё обещание «безопаснее вас» только что убило человека. В роли директора по безопасности Кормака Куэйда — роман с тремя женщинами, каждая с частью правды, что вы помогли похоронить.",
 "4929640":"Взрослая романтическая визуальная новелла внутри гиганта синтетических медиа. В роли креативного директора Эмори Синклера ведите три опасных романа — с кризис-стратегом, вернувшейся актрисой и отдалившейся соучредительницей — пока скандал о согласии грозит обрушить всё.",
-"4934110":"SteamOS coming soon! Operate your Windows PC in VR with only your head. Built for people who can't use controllers, but useful to those who can! Go hands free in more casual experiences. Gaze-and-dwell cursor, radial menu, on-screen keyboard, for the SteamVR dashboard and your Windows desktop.",
 "4950560":"Павший чемпион тренирует открыто «улучшенный» спортивный цикл в пустыне Мохаве. В преддверии первых Ascendant Games завяжите роман с одной из трёх опасных женщин: враждебной соперницей, «чистой» чужачкой и владелицей его истории. Визуальная новелла для взрослых с откровенным контентом.",
 "4955010":"Романтическая визуальная новелла для взрослых о заповеднике возрождённых видов. Смотрителю Анселю Вейру предстоят восемь недель до мировой презентации: защитите созданных животных и выберите Фрейю, Робин или Шей.",
 "4965030":"Бессмертное свидание — романтическая визуальная новелла для взрослых о роскошном кампусе долголетия. Проведите врача Амброуза Локка через три любовные линии, раскройте тайну чуда Perennial и узнайте цену попытки обогнать смерть.",
@@ -471,5 +472,6 @@
 "5117090":"Взрослая романтическая визуальная новелла о галисийской деревне, отрезанной от мира после полного затмения. Делайте выбор в трёх разных маршрутах, решайте конфликты общины и сближайтесь с Бруной, Сабелой или Канделой, пока Лоурейра определяет своё будущее.",
 "5136190":"Возглавьте 4 200 бортпроводников в напряжённой забастовке авиакомпании в роли профсоюзного лидера Роуэна Петрака. Боритесь с давлением общества, ведите трудные переговоры и выбирайте одну из трёх романтических линий, ведущих к разным финалам.",
 "5164070":"В бассейне реки Оссо все знают назначение паводкового канала: еще в 1937 году восемьдесят четыре тысячи акров, включая Корделл, были отмечены как зона, которой придется пожертвовать, чтобы спасти город ниже по течению от наводнения.",
-"5178250":"За одиннадцать недель откройте вновь разграбленную миссию и узнайте, какую цену прошлое требует до сих пор. Выберите одну из трех романтических линий, каждая из которых развивается под особым давлением, со своими ставками и последствиями."
+"5178250":"За одиннадцать недель откройте вновь разграбленную миссию и узнайте, какую цену прошлое требует до сих пор. Выберите одну из трех романтических линий, каждая из которых развивается под особым давлением, со своими ставками и последствиями.",
+"5188980":"Проведите 48 дней в строгой изоляции в этой романтической визуальной новелле для взрослых. Расследуйте утечку экзаменационного вопроса, выдержите давление Института и выберите один из трёх романов, чтобы решить, с кем Хан До Джин выйдет за ворота."
 }}

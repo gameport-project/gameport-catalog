@@ -35,6 +35,7 @@
 "1667":"Terror",
 "1669":"Modificables",
 "1676":"ETR",
+"1678":"Bélicos",
 "1681":"Piratas",
 "1684":"Fantasía",
 "1685":"Cooperativos",
@@ -285,7 +286,7 @@
 "1124160":"VR Giants is a local/online co-op VR game in which one VR player and one screen player work together. The VR player controls a giant and must protect and support the tiny player who is controlled by the screen player. The tiny player can use the body of the giant as an extension of the level.",
 "1125240":"Ancient Dungeon VR is a fast-paced roguelite dungeon crawler built for VR. Explore procedurally generated dungeons, slash enemies, collect loot, and unlock upgrades in immersive physics-based combat. Play solo or co-op with up to 4 players.",
 "1177340":"Unification is about a cat chasing its own laser pointer into an ancient black hole engine.\r\nUnleash your cat instincts as Gumbot, tackling physics and critters alike! Leap and scramble up ledges, zoom with rocket parkour, shift gravity at will, and wield curious artifacts and dreamlike powers.",
-"1192900":"Step inside a colossal war machine and experience what it means to be a mech pilot. \r\n\r\nControl every switch, weapon, and system from the cockpit, customize your mech for battle, and outmaneuver rival pilots in tactical cross-platform multiplayer combat.",
+"1192900":"Climb into the cockpit of a 40-ton war machine. Built for VR, this mech simulator puts every switch, weapon, and system in your hands. Customize your mech, fight solo against bots, play offline, or face rival pilots in tactical 8v8 cross-platform combat.",
 "1266470":"🎣 ¡Sumérgete en la experiencia de Real VR Pesca!\r\nExplora entornos increíblemente realistas con Real VR Pesca. Relájate en 40 mapas básicos y amplía tu aventura con DLCs para acceder a 95 lugares de pesca. Descubre más de 150 especies de peces en el juego base y más de 300 especies con los DLCs.",
 "1294760":"HARD BULLET es un juego de acción basado en físicas, donde los enemigos inundan la ciudad iluminada con neón, llevando la destrucción a sus calles. Usa la cámara lenta, un enorme arsenal y un combate brutal para sobrevivir y desbloquear nuevas armas. Prepárate para el próximo RIDE dominando tus habilidades en los modos Sandbox y Aren...",
 "1340300":"¿Quieres empezar hoy mismo tu viaje de KUNG-FU FITNESS?\r\n\r\n¡Únete a Crazy Kung Fu para empezar tu entrenamiento, mejorar tus reflejos, ponerte en forma y ser la fuerza de kung-fu definitiva!",
@@ -351,6 +352,7 @@
 "3165710":"Saddle up, cowboy! Wild West Panic is a hyper-casual VR arcade shooter: grab a WANTED poster, hunt your target, and cash in the bounty. Replay endlessly to beat your high score, but whatever you do, don't shoot the innocent, or it'll cost you dearly! Have fun, bounty hunter!",
 "3168700":"Undress your femboy waiter in this original physics puzzler! An extended demo featuring eight stages!!! A kemono game, by kemono artists.",
 "3189340":"La fantasía y acción infinitas os esperan a ti y a tus amigos en Dungeons of Eternity. Une fuerzas con otros héroes y explora los rincones más oscuros en busca de valiosos botines mientras utilizas diferentes armas para aplacar a hordas de monstruos.",
+"3384090":"Set up the battlefield with an ever growing list of units, vehicles, and emplacements! Then either join the battle as a plastic soldier or be life sized and tower over the chaos.",
 "3391450":"Deléitate en la gloria del combate en GORN 2, la gran secuela del simulador de gladiadores para VR desarrollado por Free Lives.",
 "3430260":"Hunt the corrupted Guardians and purge a dying world in Wrath: Aeon of Ruin VR, a brutal old-school FPS built in the legendary Quake engine and reimagined for virtual reality. With dual-wielding combat, physical reloading, and deadly artifacts at your command, the darkness doesn’t stand a chance.",
 "3471390":"Deslízate por la madriguera del conejo en la fantástica travesura de Escaping Wonderland, donde la extravagancia baila al son de las maravillas y los acertijos campan a sus anchas. Vive una nueva aventura junto a la siempre curiosa Molly por el entrañable mundo de Alicia en el país de las maravillas",
@@ -460,7 +462,6 @@
 "4919580":"A new roguelite twist on the classic arcade brick-breaker!\r\n\r\nProgress through levels to earn upgrades that will help you to get higher scores, progress further, and more!\r\n\r\nBut be careful! If you get a game over, you lose all of your upgrades!",
 "4922560":"Novela visual romántica para adultos en una empresa de robotaxis cuya promesa de «más seguro que tú» acaba de matar a alguien. Como el Director de Seguridad Cormac Quade, corteja a tres mujeres, cada una con una pieza de la verdad que ayudaste a enterrar.",
 "4929640":"Novela visual de romance adulto dentro de un gigante de medios sintéticos. Como el director creativo Emory Sinclair, navega tres romances peligrosos: una resolvedora, una actriz que regresa y tu cofundadora distanciada, mientras un escándalo de consentimiento amenaza con derrumbarlo todo.",
-"4934110":"SteamOS coming soon! Operate your Windows PC in VR with only your head. Built for people who can't use controllers, but useful to those who can! Go hands free in more casual experiences. Gaze-and-dwell cursor, radial menu, on-screen keyboard, for the SteamVR dashboard and your Windows desktop.",
 "4950560":"Un campeón caído entrena un circuito deportivo abiertamente mejorado en el desierto de Mojave. Con los primeros Ascendant Games cerca, conquista a tres mujeres peligrosas: una rival hostil, una outsider limpia y la ejecutiva que posee su historia. Novela visual para adultos con contenido explícito.",
 "4955010":"Una novela visual romántica para adultos ambientada en una reserva de desextinción. Como el cuidador Ansel Weir, enfrenta ocho semanas hasta una presentación mundial, protege animales creados mediante ingeniería genética y elige a Freya, Robin o Shea.",
 "4965030":"Encuentro inmortal es una novela visual romántica para adultos ambientada en un lujoso campus de longevidad. Guía al médico Ambrose Locke por tres romances, investiga el milagro de Perennial y enfrenta el precio de intentar escapar de la muerte.",
@@ -471,5 +472,6 @@
 "5117090":"Novela visual romántica para adultos ambientada en una aldea gallega aislada tras un eclipse total. Toma decisiones en tres rutas distintas, afronta conflictos de la comunidad y busca una relación con Bruna, Sabela o Candela mientras Loureira decide su futuro.",
 "5136190":"Lidera a 4,200 tripulantes de cabina durante una explosiva huelga aérea como el presidente sindical Rowan Petrak. Enfrenta presión pública, duras negociaciones y tres romances donde la lealtad, la credibilidad y tus decisiones definen múltiples finales.",
 "5164070":"En la cuenca del río Ossaw, todos conocen la función del cauce de alivio: ochenta y cuatro mil acres, incluido Cordell, fueron marcados en 1937 como la zona que debe sacrificarse para impedir que una ciudad río abajo se inunde.",
-"5178250":"Reabre una legación saqueada en once semanas y descubre que el pasado es lo más difícil de negociar. Elige entre tres rutas románticas distintas, cada una marcada por sus propias presiones, riesgos y consecuencias."
+"5178250":"Reabre una legación saqueada en once semanas y descubre que el pasado es lo más difícil de negociar. Elige entre tres rutas románticas distintas, cada una marcada por sus propias presiones, riesgos y consecuencias.",
+"5188980":"Vive un encierro de seguridad de 48 días en esta novela visual romántica para adultos. Investiga la filtración de una pregunta de examen, resiste la presión institucional y elige entre tres relaciones que decidirán con quién saldrá Han Do-jin más allá de la cerca."
 }}

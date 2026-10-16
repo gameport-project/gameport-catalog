@@ -35,6 +35,7 @@
 "1667":"恐怖",
 "1669":"可模组化",
 "1676":"即时战略",
+"1678":"战争",
 "1681":"海盗",
 "1684":"奇幻",
 "1685":"合作",
@@ -285,7 +286,7 @@
 "1124160":"VR Giants是一个本地合作VR游戏，一个VR玩家和一个游戏手柄玩家一起工作。VR玩家控制一个巨人，必须保护并支持由屏幕玩家控制的微小玩家。微小玩家可以使用巨人的身体作为关卡的扩展。",
 "1125240":"Ancient Dungeon VR is a fast-paced roguelite dungeon crawler built for VR. Explore procedurally generated dungeons, slash enemies, collect loot, and unlock upgrades in immersive physics-based combat. Play solo or co-op with up to 4 players.",
 "1177340":"Unification is about a cat chasing its own laser pointer into an ancient black hole engine.\r\nUnleash your cat instincts as Gumbot, tackling physics and critters alike! Leap and scramble up ledges, zoom with rocket parkour, shift gravity at will, and wield curious artifacts and dreamlike powers.",
-"1192900":"Step inside a colossal war machine and experience what it means to be a mech pilot. \r\n\r\nControl every switch, weapon, and system from the cockpit, customize your mech for battle, and outmaneuver rival pilots in tactical cross-platform multiplayer combat.",
+"1192900":"Climb into the cockpit of a 40-ton war machine. Built for VR, this mech simulator puts every switch, weapon, and system in your hands. Customize your mech, fight solo against bots, play offline, or face rival pilots in tactical 8v8 cross-platform combat.",
 "1266470":"Real VR Fishing recreates real-world locations. Start across 40 maps, then expand to 95 fishing spots and 300+ species through DLC. Cast, feel every bite, and build your own aquarium — solo or with up to 3 friends. Pure, relaxing catch-and-release, in VR.",
 "1294760":"《HARD BULLET》是一款基于物理的动作游戏，敌人涌入霓虹闪烁的城市，给街道带来破坏。运用慢动作、庞大的武器库和残酷的战斗来生存，并解锁新武器。通过在沙盒和竞技场模式中磨练技能，为下一次“疾驰”做好准备。",
 "1340300":"努力练功，成为世界前所未见的功夫大师. 你会从一个没有经验，反应也慢的功夫学员开始. 在练功进程中，你会逐渐接触到更精深的训练方法，更快，更复杂，直到你随心所欲，挥洒自如.",
@@ -351,6 +352,7 @@
 "3165710":"Saddle up, cowboy! Wild West Panic is a hyper-casual VR arcade shooter: grab a WANTED poster, hunt your target, and cash in the bounty. Replay endlessly to beat your high score, but whatever you do, don't shoot the innocent, or it'll cost you dearly! Have fun, bounty hunter!",
 "3168700":"Undress your femboy waiter in this original physics puzzler! An extended demo featuring eight stages!!! A kemono game, by kemono artists.",
 "3189340":"奇幻世界里的无尽动作冒险正在《Dungeons of Eternity》中等待你和你的朋友们。与各路英雄组队，探索黑暗角落，寻找珍贵战利品，使用各色武器击溃阻挡去路的成群怪物。",
+"3384090":"Set up the battlefield with an ever growing list of units, vehicles, and emplacements! Then either join the battle as a plastic soldier or be life sized and tower over the chaos.",
 "3391450":"《血腥角斗2》是来自Free Lives的残酷VR角斗士模拟器的大型续作。在血腥角斗场中为战斗的荣耀举拳同庆吧！",
 "3430260":"Hunt the corrupted Guardians and purge a dying world in Wrath: Aeon of Ruin VR, a brutal old-school FPS built in the legendary Quake engine and reimagined for virtual reality. With dual-wielding combat, physical reloading, and deadly artifacts at your command, the darkness doesn’t stand a chance.",
 "3471390":"跌入兔子洞，进入处处都是谜题的《逃离奇境》世界！与充满好奇心的莫莉一起，在人人称道的《爱丽丝漫游奇境》的世界中展开新的冒险。在复杂的挑战中解谜，在上就是下、左就是右的绮丽风景里迷失自我，一切都和看上去的不甚相同。好好享受这个充满着脑筋急转弯、魔法和令人愉悦的胡说八道的旅程吧。发现莫莉逃避的真相，并帮助她恢复记忆——只要你敢！",
@@ -460,7 +462,6 @@
 "4919580":"A new roguelite twist on the classic arcade brick-breaker!\r\n\r\nProgress through levels to earn upgrades that will help you to get higher scores, progress further, and more!\r\n\r\nBut be careful! If you get a game over, you lose all of your upgrades!",
 "4922560":"一部关于\"可接受的风险\"代价的成人爱情视觉小说。Wayfarer公司的旗舰机器人出租车\"比你更安全\"的承诺刚刚害死了一个人。扮演首席安全官科马克·奎德——与感知工程师马丽特、市交通委员长奥拉,或被公司选作替罪羊的25岁远程操作员塔莉亚展开恋情。三条路线,三种道德冲撞。每人都掌握着你曾协助掩埋的真相中的一块不同碎片,每场恋爱都由坦白、共谋以及最终道出真正原因所付出的代价所塑造。联邦调查逼近,城市听证会迫在眉睫。",
 "4929640":"一部设定于合成媒体巨头 Vessel 内部的成人恋爱视觉小说。作为公司备受赞誉、以签名担保生成同意的首席创意官 Emory Sinclair，在受雇为董事会掩盖真相的危机公关策略师、归来夺回自己面容的一线女演员，以及形同陌路的联合创始人妻子之间，同时周旋三段危险的恋情。一桩未经同意生成的私密影像丑闻正席卷而来，威胁摧毁你所建立的一切事业、婚姻与信任，迫使你在爱情、忠诚与真相之间做出无法回头的抉择。",
-"4934110":"SteamOS coming soon! Operate your Windows PC in VR with only your head. Built for people who can't use controllers, but useful to those who can! Go hands free in more casual experiences. Gaze-and-dwell cursor, radial menu, on-screen keyboard, for the SteamVR dashboard and your Windows desktop.",
 "4950560":"一位跌落神坛的冠军，在莫哈韦沙漠执教一个公开\"增强\"的体育赛事体系。首届 Ascendant Games 临近之际，与三位危险的女性展开恋爱：敌意十足的对手、\"干净\"的局外人，以及掌握着他故事的高管。含露骨内容的成人视觉小说。",
 "4955010":"一部以物种复活保护区为舞台的成人恋爱视觉小说。你将扮演饲养员安塞尔·威尔，在全球公开展示前仅剩的八周内照料恐狼、袋狼与体弱的幼年猛犸象Clover，面对研究、商业、抗议活动与动物福祉之间不断升级的冲突。你的关键选择不仅会决定这些基因工程生命的未来，以及Vestige究竟是庇护所还是美丽牢笼，也会让你在遗传学家芙蕾雅、纪录片导演罗宾与牧场兽医希娅之间选择一段爱情，并迎来截然不同的故事路线、危机与结局。",
 "4965030":"《不朽幽会》是一部面向成年玩家的浪漫视觉小说，故事发生在奢华的长寿研究园区佩雷尼尔。你将引导医生安布罗斯·洛克周旋于阿拉贝拉、塞西莉亚与戴安娜三条截然不同的恋爱路线，调查所谓长寿奇迹背后被篡改的数据、隐瞒的死亡与家族秘密。每一次选择都会改变人物关系、峰会走向和最终结局。游戏以清晰直接的方式呈现死亡、悲伤、医学伦理、被商品化的希望等成熟主题，并包含露骨性场景与裸体内容。你必须决定，为了爱情、诚实和佩雷尼尔的未来，安布罗斯愿意付出什么代价；也必须直面一个无法回避的问题：逃离死亡，究竟意味着获得更多生命，还是仅仅拖延时间？",
@@ -471,5 +472,6 @@
 "5117090":"一部以日全食后与世隔绝的加利西亚村庄为舞台的成人恋爱视觉小说。在三条独立路线中做出选择，处理村民之间的冲突，并与布鲁娜、萨贝拉或坎德拉发展关系。随着道路坍塌、资源吃紧与公众压力不断升级，你的决定将影响努诺的感情，以及洛雷拉最终选择怎样的未来。",
 "5136190":"作为工会主席罗文·佩特拉克，带领4,200名客舱乘务员投身一场动荡的航空公司罢工。在二十四个危机四伏的日夜里，应对公众压力、媒体叙事、经济困境、会员分歧与艰难谈判，同时守住工会授权和个人公信力。三条围绕不同权力关系展开的恋爱路线等待你的选择；你对忠诚、领导责任与私人感情的每个决定，都将影响第14分会的未来、罗文与同伴的关系，以及多个截然不同的结局。你能否让数千名工人坚持到最后，迫使 Nimbus Air 正视无薪劳动与不公平排班，并在职业使命与个人渴望之间找到道路？每场交锋和每次私下会面，都可能改变公众、谈判桌与罢工队伍对你的看法。",
 "5164070":"奥索河流域的人们一直清楚泄洪区的用途：早在1937年的地图上，包括科德尔镇在内的八万四千英亩土地就被划为必要时必须牺牲的区域，只为让下游城市免遭洪水吞没。如今河水迅速上涨，熔断堤即将启用，负责抗洪的泽克必须挨家挨户通知居民撤离，并在职责、故乡与三段感情之间作出无法回避的选择。十一天内，沙袋筑防、防疫巡查、牲畜转移和不断逼近的洪峰，把每个人都推向决定命运的时刻。这是一部以真实防洪程序为背景的成人灾难爱情视觉小说，讲述牺牲、责任、离去的代价，以及堤坝后方无法被安全隔绝的爱。",
-"5178250":"在十一周内重新启用一座遭洗劫的公使馆，并发现最难谈判的并不是国书、索赔或期限，而是过去至今仍要求每个人付出的代价。扮演重返杜拉尔的职业外交官伊沃，在战后官僚体系、事件报告、修复工程与未清旧账之间作出选择。三条独立恋爱路线分别围绕禁忌吸引、归乡者的记忆和充满敌意的重逢展开，每段关系都有不同的压力、风险、关键决定与后果。你必须在职责与欲望、制度与个人、承认与拒绝之间找到自己的立场，同时逐个房间重建外交官邸，面对一座从未等待你的城市。游戏包含明确标示的露骨成人场景。"
+"5178250":"在十一周内重新启用一座遭洗劫的公使馆，并发现最难谈判的并不是国书、索赔或期限，而是过去至今仍要求每个人付出的代价。扮演重返杜拉尔的职业外交官伊沃，在战后官僚体系、事件报告、修复工程与未清旧账之间作出选择。三条独立恋爱路线分别围绕禁忌吸引、归乡者的记忆和充满敌意的重逢展开，每段关系都有不同的压力、风险、关键决定与后果。你必须在职责与欲望、制度与个人、承认与拒绝之间找到自己的立场，同时逐个房间重建外交官邸，面对一座从未等待你的城市。游戏包含明确标示的露骨成人场景。",
+"5188980":"在这部成人恋爱视觉小说中，经历长达48天的严密封闭。调查一道人为泄露的考试题目，应对不断升级的机构压力，同时履行试卷安保负责人的职责。手机被收走，邮件受到监控，通话会被记录，离开山谷的时间早已固定。三位女性将韩道镇引向三种截然不同的未来；每一次问询、每项安保决定和每个感情选择，都会改变调查方向以及围栏内逐渐形成的关系。选择完整的恋爱路线，在责任、真相和无法回避的过去之间作出决定，并揭晓他最终会与谁一起跨过大门。游戏包含三条各具冲突与结局的路线，以及明确的成人场景。"
 }}
