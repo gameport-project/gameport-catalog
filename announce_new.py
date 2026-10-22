@@ -27,6 +27,8 @@ STEAM = "https://store.steampowered.com/app"
 MAX_ANNOUNCED = 30
 BLURPLE = 0x5865F2
 KINDS = {"game": "Game", "demo": "Demo", "beta": "Beta", "application": "App"}
+# The store tags of nudity and sexual content (Nudity, Sexual Content, NSFW, Hentai): the site filters on the same ones.
+ADULT_TAGS = {6650, 12095, 24904, 9130}
 SYMBOLS = {"EUR": "€", "USD": "$", "GBP": "£", "CAD": "CA$", "AUD": "A$", "CHF": "CHF "}
 # Discord's flag for a message that does not notify anyone.
 SILENT = 1 << 12
@@ -91,13 +93,18 @@ def newest(apps, count):
 
 
 def line(app, price=None, symbol=""):
-    """The text of an app: its name as a link, then what it is, where it is played and what it costs."""
+    """The text of an app: its name as a link, then what it is, where it is played and whether it is tagged adult, and the price on a line of its own."""
     kind = KINDS.get(app.get("type"), "App")
-    where = "VR" if app.get("vr") else "Flat"
+    # Bold and first: whether it is played in VR or flat is what a reader of this channel looks for first.
+    where = f"**{'VR' if app.get('vr') else 'Flat'}**"
+    adult = "🔞 Adult" if set(app.get("tags") or ()) & ADULT_TAGS else None
     name = app["name"].replace("[", "(").replace("]", ")")[:120]
     link = app.get("store") or f"{STEAM}/{app['appid']}"
-    facts = " · ".join(part for part in (kind, where, price_text(price, symbol)) if part)
-    return f"**[{name}]({link})**\n{facts}"
+    # A small, discreet link to the game's own page on the site, next to the facts: the title already links to Steam.
+    gameport = f"[GamePort]({SITE}/#/g/{app['appid']})"
+    facts = " · ".join(part for part in (where, kind, adult, gameport) if part)
+    cost = price_text(price, symbol)
+    return f"**[{name}]({link})**\n{facts}" + (f"\n\n{cost}" if cost else "")
 
 
 def fetch(url):
@@ -166,8 +173,10 @@ def messages(apps, role_id=None, test=False, prices=None, symbol="", thumbs=None
             inside.append({"type": 9, "components": [text], "accessory": {"type": 11, "media": {"url": picture}, "description": app["name"][:100]}} if picture else text)
         if number == len(chunks) - 1:
             more = f"and {hidden} more, " if hidden else ""
+            # One app: the link goes straight to its page; several: to the site, where they are all listed.
+            where = f"{SITE}/#/g/{apps[0]['appid']}" if len(apps) == 1 else SITE
             inside.append({"type": 14, "divider": False, "spacing": 1})
-            inside.append({"type": 10, "content": f"-# {more}all of them on {SITE}"})
+            inside.append({"type": 10, "content": f"-# {more}all of them on {where}" if hidden or len(apps) > 1 else f"-# on {where}"})
         out.append({
             "username": "GamePort",
             "flags": COMPONENTS_V2 | (0 if number == 0 else SILENT),

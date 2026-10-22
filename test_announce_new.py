@@ -70,10 +70,10 @@ class PriceTest(unittest.TestCase):
 
 class LineTest(unittest.TestCase):
     def test_a_line_has_the_name_as_a_link_the_kind_where_it_is_played_and_the_price(self):
-        self.assertEqual("**[App 5](https://store.steampowered.com/app/5)**\nDemo · Flat · Free", a.line(app(5, type="demo", vr=False), (0, 0), "€"))
+        self.assertEqual("**[App 5](https://store.steampowered.com/app/5)**\n**Flat** · Demo · [GamePort](https://gameport-project.github.io/#/g/5)\n\nFree", a.line(app(5, type="demo", vr=False), (0, 0), "€"))
 
     def test_without_a_price_the_line_has_none(self):
-        self.assertEqual("**[App 5](https://store.steampowered.com/app/5)**\nGame · VR", a.line(app(5)))
+        self.assertEqual("**[App 5](https://store.steampowered.com/app/5)**\n**VR** · Game · [GamePort](https://gameport-project.github.io/#/g/5)", a.line(app(5)))
 
     def test_a_name_cannot_break_the_link_or_run_on(self):
         text = a.line(app(5, name="A [b] " + "x" * 300))
@@ -83,6 +83,12 @@ class LineTest(unittest.TestCase):
     def test_a_line_without_a_link_points_to_steam(self):
         self.assertIn("(https://store.steampowered.com/app/8)", a.line({"appid": 8, "name": "X", "type": "application", "vr": False}))
 
+    def test_an_app_tagged_adult_says_so_with_the_kind_and_where_and_the_price_is_on_its_own_line(self):
+        self.assertIn("**Flat** · Game · 🔞 Adult · [GamePort]", a.line(app(5, tags=[6650, 492], vr=False), (100, 100), "€"))
+        self.assertIn("\n\n€1.00", a.line(app(5, tags=[6650, 492], vr=False), (100, 100), "€"))
+        self.assertNotIn("Adult", a.line(app(5, tags=[492, 21978])))
+        self.assertNotIn("Adult", a.line(app(5)))
+
 
 class MessagesTest(unittest.TestCase):
     def test_the_cover_of_an_app_is_on_the_right_of_its_text(self):
@@ -91,6 +97,15 @@ class MessagesTest(unittest.TestCase):
         section = next(c for c in container["components"] if c["type"] == 9)
         self.assertEqual("https://img/1.jpg", section["accessory"]["media"]["url"])
         self.assertEqual(11, section["accessory"]["type"])
+
+    def test_one_app_links_straight_to_its_page_and_several_link_to_the_site(self):
+        (one,) = a.messages([app(5)])
+        footer = one["components"][0]["components"][-1]["content"]
+        self.assertIn("gameport-project.github.io/#/g/5", footer)
+        (several,) = a.messages([app(5), app(6)])
+        footer2 = several["components"][0]["components"][-1]["content"]
+        self.assertIn("gameport-project.github.io", footer2)
+        self.assertNotIn("/#/g/", footer2)
 
     def test_an_app_without_any_picture_is_only_its_text(self):
         (message,) = a.messages([{"appid": 8, "name": "X", "type": "demo", "vr": False}])
