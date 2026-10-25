@@ -253,6 +253,53 @@ class TextsTest(unittest.TestCase):
         self.assertEqual([1], list(items))
 
 
+class MediaTest(unittest.TestCase):
+    HASH_A = "a" * 40
+    HASH_B = "b" * 40
+    PATH_A = f"{HASH_A}/ss_{HASH_A}"
+    PATH_B = f"ss_{HASH_B}"
+
+    def item(self):
+        return {
+            "screenshots": {"all_ages_screenshots": [
+                {"filename": f"steam/apps/10/{self.HASH_A}/ss_{self.HASH_A}.jpg?t=1", "ordinal": 1},
+                {"filename": f"steam/apps/10/ss_{self.HASH_B}.jpg?t=1", "ordinal": 2},
+                {"filename": f"steam/apps/10/{self.HASH_A}/ss_{self.HASH_A}.jpg?t=2", "ordinal": 3},
+            ]},
+            "trailers": {"highlights": [
+                {"trailer_name": "Trailer", "all_ages": True, "screenshot_medium": "9/abc/movie_600x337.jpg",
+                 "microtrailer": [{"filename": "10/1/x/microtrailer.webm", "type": "video/webm"}, {"filename": "10/1/x/microtrailer.mp4", "type": "video/mp4"}],
+                 "adaptive_trailers": [{"cdn_path": "10/1/x/dash_h264.mpd", "encoding": "dash_h264"}, {"cdn_path": "10/1/x/hls_264_master.m3u8", "encoding": "hls_h264"}]},
+            ]},
+        }
+
+    def test_a_screenshot_is_its_path_and_a_trailer_the_paths_the_front_needs(self):
+        entry = refresh.media_entry(self.item())
+        # One in a folder of its own, one directly under the app (the older apps): both kept as they are, without the extension.
+        self.assertEqual([self.PATH_A, self.PATH_B], entry["s"])
+        self.assertEqual([{"n": "Trailer", "p": "9/abc/movie_600x337.jpg", "h": "10/1/x/hls_264_master.m3u8", "m": "10/1/x/microtrailer.mp4"}], entry["t"])
+
+    def test_a_trailer_not_for_all_ages_or_without_a_stream_is_left_out(self):
+        item = self.item()
+        item["trailers"]["highlights"] = [{"trailer_name": "Mature", "all_ages": False, "microtrailer": [{"filename": "x.mp4", "type": "video/mp4"}]},
+                                          {"trailer_name": "Empty", "all_ages": True}]
+        self.assertNotIn("t", refresh.media_entry(item))
+
+    def test_an_app_with_nothing_has_no_entry(self):
+        self.assertIsNone(refresh.media_entry({}))
+        self.assertIsNone(refresh.media_entry({"screenshots": {"all_ages_screenshots": []}, "trailers": {"highlights": []}}))
+
+    def test_at_most_three_trailers(self):
+        item = self.item()
+        item["trailers"]["highlights"] = item["trailers"]["highlights"] * 5
+        self.assertEqual(refresh.MAX_TRAILERS, len(refresh.media_entry(item)["t"]))
+
+    def test_the_file_has_one_app_a_line_in_order_of_id(self):
+        text = refresh.render_media({20: {"s": ["b"]}, 3: {"s": ["a"]}})
+        self.assertEqual('{"v":1,"count":2,"apps":{\n"3":{"s":["a"]},\n"20":{"s":["b"]}\n}}\n', text)
+        self.assertEqual({"3": {"s": ["a"]}, "20": {"s": ["b"]}}, json.loads(text)["apps"])
+
+
 class RenderTest(unittest.TestCase):
     def entries(self):
         a = refresh.classify(20, app(depots={"11": depot("android")}, name='B "quoted"'))

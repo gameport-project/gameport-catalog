@@ -10,10 +10,11 @@ Everything an app reads is under `v1/`, the version of the format. A published f
 |---|---|
 | `v1/catalog.json` | The Steam apps that have an Android build, one app a line. Does not depend on the language. |
 | `v1/text/<language>.json` | The short descriptions and the tag names, in one language (30 files). |
+| `v1/media.json` | The screenshots and trailers of the store page of each app, for the apps that have some. Does not depend on the language. |
 | `v1/prices/` | The prices of those apps in every currency Steam bills in, and their history: see below. |
 | `v1/vr-ports/` | The community VR ports: `index.json` and one folder for each port. The format GamePort's loader reads. |
 | `ports_index.py` | Writes `v1/vr-ports/index.json` from the manifests: nobody edits it by hand. |
-| `refresh.py` | Rebuilds `v1/catalog.json` and `v1/text/` from Steam. |
+| `refresh.py` | Rebuilds `v1/catalog.json`, `v1/text/` and `v1/media.json` from Steam. |
 | `prices.py` | Reads the prices and writes the files of `v1/prices/` that changed (`prices-pending.json` holds the changes waiting for a second reading). |
 | `backfill.py` | Reads the past prices (two years) from IsThereAnyDeal, for each game and country that has none yet (`prices-backfilled.json` notes the ones done). |
 | `.github/workflows/backfill.yml` | Runs `backfill.py` right after each refresh of the catalog, so a new game has its history within minutes; by hand, with a number of pairs, for a long backlog. |
@@ -61,6 +62,24 @@ Each app:
 `tags` names the tag ids used by the catalog. `summaries` holds the short description of each app. Steam answers in English when a text has no translation, so every file is complete: the front never needs a fallback.
 
 Language codes: `ar bg zh-CN zh-TW cs da nl en fi fr de el hu id it ja ko no pl pt pt-BR ro ru es-419 es sv th tr uk vi`.
+
+## v1/media.json
+
+```
+{"v":1,"count":228,"apps":{
+"2710650":{"s":["3e1b39a5927040c84c8bcb6d340c3ec7d902a102/ss_3e1b39a5927040c84c8bcb6d340c3ec7d902a102",...],"t":[{"n":"Quantum Void Trailer English","p":"257163632/313822af.../movie_600x337.jpg","h":"2710650/2018454788/77063d.../1783384772/hls_264_master.m3u8","m":"2710650/2018454788/77063d.../1783384772/microtrailer.mp4"}]},
+...
+}}
+```
+
+One app a line, in order of id. It comes from the same calls of the store API as the texts (the English reading also asks for the screenshots and the trailers), so it costs Steam no call more. Only what is for all ages is kept.
+
+| Key | What it is |
+|---|---|
+| `s` | The screenshots, in the order of the store page, each as its path under the app without the extension: `<hash>/ss_<hash>` for a recent app, `ss_<hash>` for an older one. The pictures are at `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/<appid>/<path>.600x338.jpg` (thumbnail) and `.1920x1080.jpg` (full size). |
+| `t` | Up to three trailers: `n` the name, `p` the thumbnail (at `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/<p>`), `h` the adaptive stream in HLS and `m` the short silent loop in MP4, both under `https://video.akamai.steamstatic.com/store_trailers/`. Either `h` or `m` may be missing. |
+
+The file is left as it was when far fewer apps have media than before (a reading that went wrong).
 
 ## v1/prices/
 

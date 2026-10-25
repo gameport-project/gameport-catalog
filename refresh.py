@@ -193,14 +193,19 @@ def get_json(url):
             time.sleep(30 * (attempt + 1))
 
 
-def store_items(key, ids, language):
-    """The store's view of the apps in one language: their texts, reviews and release, by app id. Steam answers in English for a text it has no translation of."""
+# What the English reading also asks for, in the same calls: the pictures and the trailers of the store page (see media_entry). They do not depend on the language.
+MEDIA_REQUEST = {"include_screenshots": True, "include_trailers": True}
+
+
+def store_items(key, ids, language, extra=None):
+    """The store's view of the apps in one language: their texts, reviews and release, by app id. Steam answers in English for a text it has no translation of.
+    `extra` adds to what is asked of each app, in the same calls."""
     items = {}
     for i in range(0, len(ids), BATCH):
         request = {
             "ids": [{"appid": a} for a in ids[i:i + BATCH]],
             "context": {"language": language, "country_code": "US"},
-            "data_request": {"include_basic_info": True, "include_reviews": True},
+            "data_request": {"include_basic_info": True, "include_reviews": True, **(extra or {})},
         }
         body = get_json(f"{STORE_API}/IStoreBrowseService/GetItems/v1?key={key}&{urllib.parse.urlencode({'input_json': json.dumps(request)})}")
         for item in body["response"].get("store_items", []):
@@ -251,6 +256,70 @@ def write_if_changed(path, text):
         out.write(text)
     os.replace(path + ".tmp", path)
     return True
+
+
+MAX_TRAILERS = 3
+# Newer apps keep a screenshot in a folder of its own (`steam/apps/<id>/<hash>/ss_<hash>.jpg`), older ones directly under the app (`steam/apps/<id>/ss_<hash>.jpg`):
+# the path after the app is kept, without the extension, and the front adds the size.
+SCREENSHOT = re.compile(r"^steam/apps/\d+/((?:[0-9a-f]{40}/)?ss_[0-9a-f]{40})\.jpg")
+
+
+def media_entry(item):
+    """The pictures and trailers of one app's store page, as short as a file can hold them, or None when it has none. The addresses are built by the front from
+    these: a screenshot is its path under the app without the extension, a trailer the paths of its adaptive stream (HLS) and of its short loop (MP4) on the video CDN, and of its thumbnail on the
+    image CDN. Only what is for all ages is kept."""
+    shots = []
+    for shot in ((item.get("screenshots") or {}).get("all_ages_screenshots") or []):
+        found = SCREENSHOT.match(shot.get("filename") or "")
+        if found and found.group(1) not in shots:
+            shots.append(found.group(1))
+    trailers = []
+    for trailer in ((item.get("trailers") or {}).get("highlights") or []):
+        if len(trailers) >= MAX_TRAILERS:
+            break
+        if trailer.get("all_ages") is False:
+            continue
+        hls = next((t["cdn_path"] for t in trailer.get("adaptive_trailers") or [] if t.get("encoding") == "hls_h264" and t.get("cdn_path")), None)
+        loop = next((m["filename"] for m in trailer.get("microtrailer") or [] if m.get("type") == "video/mp4" and m.get("filename")), None)
+        if not hls and not loop:
+            continue
+        entry = {"n": trailer.get("trailer_name") or "", "p": trailer.get("screenshot_medium") or ""}
+        if hls:
+            entry["h"] = hls
+        if loop:
+            entry["m"] = loop
+        trailers.append(entry)
+    if not shots and not trailers:
+        return None
+    entry = {}
+    if shots:
+        entry["s"] = shots
+    if trailers:
+        entry["t"] = trailers
+    return entry
+
+
+def render_media(entries):
+    """v1/media.json: one app a line, the apps in order of their id, so a change of one shows as a change of one line."""
+    lines = [f'"{appid}":' + json.dumps(entry, separators=(",", ":"), ensure_ascii=False) for appid, entry in sorted(entries.items())]
+    return '{"v":1,"count":%d,"apps":{\n%s\n}}\n' % (len(lines), ",\n".join(lines))
+
+
+def write_media(apps, english, path):
+    """Writes v1/media.json from the English reading. The file is left as it was when far fewer apps have media than before (a reading that went wrong)."""
+    entries = {}
+    for app in apps:
+        entry = media_entry(english.get(app["appid"]) or {})
+        if entry:
+            entries[app["appid"]] = entry
+    before = 0
+    if os.path.exists(path):
+        match = re.search(r'"count":(\d+)', read_text(path)[:100])
+        before = int(match.group(1)) if match else 0
+    if before and len(entries) < before * MIN_KEPT_SHARE:
+        print(f"media: only {len(entries)} apps against {before} in the file: the file is left as it was")
+        return
+    print(f"{path} {'written' if write_if_changed(path, render_media(entries)) else 'unchanged'} ({len(entries)} apps)")
 
 
 def add_store_facts(apps, english):
@@ -412,6 +481,7 @@ def main():
     parser.add_argument("--ids", help="a list of app ids already fetched (the answer of Steam's GetAppList)")
     parser.add_argument("--out", default="v1/catalog.json")
     parser.add_argument("--texts", default="v1/text", help="the folder of the text files")
+    parser.add_argument("--media", default="v1/media.json", help="the file of the pictures and trailers of the store pages")
     parser.add_argument("--no-texts", action="store_true", help="only the catalog, not the texts")
     parser.add_argument("--no-demos", action="store_true", help="do not ask the store for the list of demos (Steam's list of apps does not hold them)")
     args = parser.parse_args()
@@ -446,11 +516,12 @@ def main():
     track(found, previous, datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"))
     english = {}
     if key and not args.no_texts:
-        english = store_items(key, sorted(a["appid"] for a in found), "english")
+        english = store_items(key, sorted(a["appid"] for a in found), "english", MEDIA_REQUEST)
         add_store_facts(found, english)
     print(f"{args.out} {'written' if write_if_changed(args.out, render(found)) else 'unchanged'}")
     if key and not args.no_texts:
         write_texts(key, found, args.texts, english)
+        write_media(found, english, args.media)
     elif not args.no_texts:
         print("no STEAM_API_KEY: the texts are not read")
 
