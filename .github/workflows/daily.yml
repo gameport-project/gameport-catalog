@@ -51,6 +51,15 @@ jobs:
             git pull --rebase --autostash
             git push
           fi
+      # Asks the site to rebuild itself now, so it shows the new catalog without waiting for its own schedule (every six hours, for the players' answers).
+      # Needs the secret SITE_DISPATCH_TOKEN: a token that may start workflows of the site's repository (see the README). Skipped without it; a failure here changes nothing.
+      - name: Rebuild the site
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SITE_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then echo "SITE_DISPATCH_TOKEN is not set: the site rebuilds on its own schedule"; exit 0; fi
+          gh api -X POST repos/gameport-project/gameport-project.github.io/actions/workflows/pages.yml/dispatches -f ref=main
       # Tells the Discord channel of the new Android versions which games, demos, betas or applications became installable in this run. Skipped without the secret;
       # a failure here changes nothing of the catalog, which is already written. DISCORD_NEW_GAMES_ROLE_ID (a variable of the repository) names the role to mention.
       - name: Announce the new Android versions

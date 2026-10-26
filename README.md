@@ -117,6 +117,8 @@ ITAD_API_KEY=... python3 backfill.py --limit 1500   # the past prices of what ha
 
 `STEAM_API_KEY` is a Steam Web API key (https://steamcommunity.com/dev/apikey), kept as a repository secret for the workflows. `ITAD_API_KEY` is the API key of an app made at https://isthereanydeal.com/apps/, also a repository secret: it is only for the past prices of the games and countries that have none (the OAuth client of that app is not used). Each key is only sent to the service it belongs to and is never written to a file.
 
+`SITE_DISPATCH_TOKEN` is a fine-grained personal access token that may only start workflows of the site's repository (`gameport-project.github.io`, permission Actions: read and write, nothing else). The daily workflow uses it to ask the site to rebuild right after the catalog changes. Without it the site still rebuilds on its own, every six hours.
+
 How it works: Steam's API lists every game and program but cannot filter on the platform. Each app is read with an anonymous Steam session (no account, no licence: the product info of public apps is public) and kept when it declares an Android depot. The store API then gives the texts, by batches, with a pause between calls because Steam answers `429` to a faster pace. The files are left alone when a read looks wrong (too many ids lost, far fewer apps than before, a language that cannot be read).
 
 ## The announcement of new Android versions
