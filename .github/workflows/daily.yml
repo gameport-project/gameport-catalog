@@ -38,16 +38,17 @@ jobs:
         run: python3 refresh.py
       - name: Commit what changed
         run: |
-          # The catalog and the texts: git status also sees the files that are new.
-          if [ -z "$(git status --porcelain -- v1/catalog.json v1/text)" ]; then
+          # The catalog, the texts and the pictures of the store pages (media.json): git status also sees the files that are new.
+          if [ -z "$(git status --porcelain -- v1/catalog.json v1/media.json v1/text)" ]; then
             echo "nothing changed"
           else
             count="$(grep -o '"count":[0-9]*' v1/catalog.json | head -1 | cut -d: -f2)"
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add v1/catalog.json v1/text
+            git add v1/catalog.json v1/media.json v1/text
             git commit -m "data: update the catalog and its texts (${count} apps)"
-            git pull --rebase
+            # Whatever else the script wrote and is not committed must not stop the pull.
+            git pull --rebase --autostash
             git push
           fi
       # Tells the Discord channel of the new Android versions which games, demos, betas or applications became installable in this run. Skipped without the secret;
