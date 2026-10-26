@@ -31,6 +31,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from gevent import Timeout
 from gevent.pool import Pool
 from steam.client import SteamClient
 
@@ -39,6 +40,7 @@ STORE = "https://store.steampowered.com/app"
 LISTED = {"game", "demo", "beta", "application"}
 CHUNK = 200
 PARALLEL = 4
+READ_TIMEOUT = 90         # seconds to wait for one chunk of ids
 MAX_LOST_SHARE = 0.005   # a read that loses more of the ids is not written
 MIN_KEPT_SHARE = 0.5     # nor one that finds less than this share of what the file held
 VR_TAG = 21978           # store tag "VR"; category_53 / category_54 are Valve's "VR Supported" / "VR Only"
@@ -453,7 +455,7 @@ def scan(ids):
     def read(chunk):
         for attempt in range(3):
             try:
-                answer = client.get_product_info(apps=chunk, timeout=90)
+                answer = client.get_product_info(apps=chunk, timeout=READ_TIMEOUT)
                 for appid, data in (answer.get("apps") or {}).items():
                     kind = str((data.get("common") or {}).get("type", "?")).lower()
                     types[kind] = types.get(kind, 0) + 1
@@ -461,7 +463,8 @@ def scan(ids):
                     if entry:
                         found.append(entry)
                 break
-            except Exception as error:
+            # gevent's Timeout is not an Exception: without naming it here a read that took too long stopped the whole run, after more than twenty minutes of work.
+            except (Exception, Timeout) as error:
                 if attempt == 2:
                     lost[0] += len(chunk)
                     print(f"lost {len(chunk)} ids from {chunk[0]}: {type(error).__name__}", flush=True)

@@ -380,3 +380,47 @@ class MendArtworkTest(unittest.TestCase):
         has = {refresh.image(11, "h/library_hero.jpg"), refresh.image(10, "portrait.png")}
         refresh.mend_artwork([entry], exists=lambda url: url in has, parents=lambda ids: {11: {"common": parent_common}})
         self.assertEqual(refresh.image(11, "h/library_hero.jpg"), entry["banner"])
+
+
+class ScanTimeoutTest(unittest.TestCase):
+    """A read of Steam that takes too long is tried again, then counted as lost, and never stops the run."""
+
+    def _scan(self, answers, ids):
+        from gevent import Timeout
+
+        class Fake:
+            connected = True
+            calls = 0
+
+            def anonymous_login(self):
+                return 1
+
+            def get_product_info(self, apps, timeout):
+                Fake.calls += 1
+                answer = answers(Fake.calls, apps)
+                if answer is Timeout:
+                    raise Timeout(timeout)
+                return answer
+
+            def logout(self):
+                pass
+
+        original = refresh.SteamClient
+        refresh.SteamClient = Fake
+        try:
+            return refresh.scan(ids), Fake.calls
+        finally:
+            refresh.SteamClient = original
+
+    def test_a_read_that_times_out_once_is_tried_again(self):
+        from gevent import Timeout
+        (found, lost, _), calls = self._scan(lambda n, apps: Timeout if n == 1 else {"apps": {}}, [10, 20])
+        self.assertEqual(0, lost)
+        self.assertEqual(2, calls)
+
+    def test_a_read_that_always_times_out_is_counted_as_lost_and_the_run_goes_on(self):
+        from gevent import Timeout
+        ids = list(range(1, refresh.CHUNK * 2 + 1))
+        # The first chunk never answers; the second does.
+        (found, lost, _), _ = self._scan(lambda n, apps: Timeout if apps[0] == 1 else {"apps": {}}, ids)
+        self.assertEqual(refresh.CHUNK, lost)
