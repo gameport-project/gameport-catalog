@@ -12,6 +12,10 @@ licence: the product info of public apps is public) and kept when it declares an
 
 The file is left alone when the read looks wrong (too many apps lost, or far fewer found than before).
 
+Nothing is ever dropped from the catalog. An app that Steam no longer lists with an Android build (a demo taken down, say) stays in the file as it was, with its name, its
+pictures, its text and its media, marked `"delisted": "<the day it was first missing>"` and not installable; an app whose read failed this time (a chunk that timed out) stays
+exactly as it was, without the mark. One that comes back is read again and loses the mark.
+
 Then, for these apps only, Steam's store API gives the texts: a short description in every language Steam has, and the names of the tags (Action,
 Adventure, Puzzle...). They go to v1/text/<language>.json, one file for each language, so the front reads only its own. A language that cannot be read
 this time keeps the file it had.
@@ -111,6 +115,23 @@ def asset_name(common, key):
     return (((common.get("library_assets_full") or {}).get(key) or {}).get("image") or {}).get("english") or None
 
 
+def keep_removed(found, previous, lost_ids, today):
+    """The entries of the last file whose app was not found this time, to be kept in the file. An app that Steam no longer lists with an Android build is kept as it was, not
+    installable and marked `delisted` with the day it was first missing (the day it already had when it was missing before); an app whose read failed (`lost_ids`) is
+    kept exactly as it was, as nothing says it is gone. Nothing leaves the catalog."""
+    here = {entry["appid"] for entry in found}
+    kept = []
+    for appid, old in sorted((previous or {}).items()):
+        if appid in here:
+            continue
+        entry = dict(old)
+        if appid not in lost_ids:
+            entry["installable"] = False
+            entry["delisted"] = old.get("delisted") or today
+        kept.append(entry)
+    return kept
+
+
 def classify(appid, data):
     """The catalog entry of an app, or None when it declares no Android depot (or is not a game, a demo, a beta or an application)."""
     common = data.get("common") or {}
@@ -178,8 +199,10 @@ def classify(appid, data):
 def render(entries):
     """The whole file, sorted by app id so that the same data always gives the same file: one app a line, so a day's changes show line by line."""
     entries = sorted(entries, key=lambda e: e["appid"])
-    counts = {s: sum(1 for e in entries if e["android"] == s) for s in ("ready", "unreleased")}
-    head = json.dumps({"v": 1, "count": len(entries), **counts}, separators=(",", ":"))[:-1]
+    live = [e for e in entries if not e.get("delisted")]
+    counts = {s: sum(1 for e in live if e["android"] == s) for s in ("ready", "unreleased")}
+    gone = len(entries) - len(live)
+    head = json.dumps({"v": 1, "count": len(entries), **counts, **({"delisted": gone} if gone else {})}, separators=(",", ":"))[:-1]
     return head + ',"apps":[\n' + ",\n".join(json.dumps(e, ensure_ascii=False, separators=(",", ":")) for e in entries) + "\n]}\n"
 
 
@@ -228,13 +251,19 @@ def summary_of(item):
     return ((item or {}).get("basic_info") or {}).get("short_description") or None
 
 
-def language_texts(apps, items, names, code):
-    """What the front needs in one language: the name of each tag the catalog uses, and the short description of each app."""
-    used = sorted({t for a in apps for t in a["tags"]})
+def language_texts(apps, items, names, code, kept=(), old=None):
+    """What the front needs in one language: the name of each tag the catalog uses, and the short description of each app. The apps Steam no longer lists (`kept`) are not
+    asked: their tags still count, and their description is the one the file already had (`old`, its summaries)."""
+    used = sorted({t for a in list(apps) + list(kept) for t in a["tags"]})
+    summaries = {str(a["appid"]): summary_of(items.get(a["appid"])) for a in apps if summary_of(items.get(a["appid"]))}
+    for a in kept:
+        before = (old or {}).get(str(a["appid"]))
+        if before:
+            summaries[str(a["appid"])] = before
     return {
         "lang": code,
         "tags": {str(t): names[t] for t in used if t in names},
-        "summaries": {str(a["appid"]): summary_of(items.get(a["appid"])) for a in sorted(apps, key=lambda a: a["appid"]) if summary_of(items.get(a["appid"]))},
+        "summaries": dict(sorted(summaries.items(), key=lambda kv: int(kv[0]))),
     }
 
 
@@ -307,13 +336,26 @@ def render_media(entries):
     return '{"v":1,"count":%d,"apps":{\n%s\n}}\n' % (len(lines), ",\n".join(lines))
 
 
-def write_media(apps, english, path):
-    """Writes v1/media.json from the English reading. The file is left as it was when far fewer apps have media than before (a reading that went wrong)."""
+def read_old(path, key):
+    """What a file of the catalog held under `key` (its summaries, its apps), or nothing when it cannot be read."""
+    try:
+        return json.loads(read_text(path)).get(key) or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def write_media(apps, english, path, kept=()):
+    """Writes v1/media.json from the English reading. The apps Steam no longer lists (`kept`) keep the pictures the file had. The file is left as it was when far fewer apps
+    have media than before (a reading that went wrong)."""
     entries = {}
     for app in apps:
         entry = media_entry(english.get(app["appid"]) or {})
         if entry:
             entries[app["appid"]] = entry
+    old = read_old(path, "apps")
+    for app in kept:
+        if str(app["appid"]) in old:
+            entries[app["appid"]] = old[str(app["appid"])]
     before = 0
     if os.path.exists(path):
         match = re.search(r'"count":(\d+)', read_text(path)[:100])
@@ -331,15 +373,16 @@ def add_store_facts(apps, english):
         app["reviewCount"] = number(summary.get("review_count"), 0) or None
 
 
-def write_texts(key, apps, folder, english):
-    """The text files of every language. A language that cannot be read keeps the file it had."""
+def write_texts(key, apps, folder, english, kept=()):
+    """The text files of every language. A language that cannot be read keeps the file it had. The apps Steam no longer lists (`kept`) are not asked: they keep their texts."""
     ids = sorted(a["appid"] for a in apps)
     written, kept = 0, []
     for steam_name, code in LANGUAGES.items():
         try:
             items = english if steam_name == "english" else store_items(key, ids, steam_name)
-            texts = language_texts(apps, items, tag_names(key, steam_name), code)
-            written += write_if_changed(os.path.join(folder, f"{code}.json"), render_texts(texts))
+            path = os.path.join(folder, f"{code}.json")
+            texts = language_texts(apps, items, tag_names(key, steam_name), code, kept, read_old(path, "summaries"))
+            written += write_if_changed(path, render_texts(texts))
         except Exception as error:
             kept.append(code)
             print(f"v1/text/{code}.json kept as it was: {type(error).__name__} {error}", flush=True)
@@ -444,8 +487,9 @@ def mend_artwork(entries, exists=picture_exists, parents=read_parents):
     return mended
 
 
-def scan(ids):
-    """The entries of the apps with an Android build among `ids`, the number of ids that could not be read, and the count of each app type seen."""
+def scan(ids, lost_ids=None):
+    """The entries of the apps with an Android build among `ids`, the number of ids that could not be read, and the count of each app type seen. The ids that could not be read
+    are added to `lost_ids` when a set is given: an app among them is not gone, it was not read."""
     client = SteamClient()
     result = client.anonymous_login()
     print("anonymous logon:", result, flush=True)
@@ -467,6 +511,8 @@ def scan(ids):
             except (Exception, Timeout) as error:
                 if attempt == 2:
                     lost[0] += len(chunk)
+                    if lost_ids is not None:
+                        lost_ids.update(chunk)
                     print(f"lost {len(chunk)} ids from {chunk[0]}: {type(error).__name__}", flush=True)
                 elif not client.connected:
                     client.anonymous_login()
@@ -499,7 +545,8 @@ def main():
         # A list that cannot be read stops the run: the file stays as it was, rather than losing every demo for a day.
         ids = sorted(set(ids) | set(demo_ids()))
     print(f"{len(ids)} ids to read", flush=True)
-    found, lost, types = scan(ids)
+    lost_ids = set()
+    found, lost, types = scan(ids, lost_ids)
     print(f"pictures found again for the apps whose own cover or banner has no file: {mend_artwork(found)}", flush=True)
     ready = sum(1 for e in found if e["android"] == "ready")
     print(f"{len(found)} apps with an Android depot ({ready} ready, {len(found) - ready} unreleased, {sum(1 for e in found if e['vr'])} VR), {lost} ids lost")
@@ -507,24 +554,27 @@ def main():
 
     if lost > len(ids) * MAX_LOST_SHARE:
         sys.exit(f"too many ids lost ({lost}): the file is left as it was")
-    before = 0
-    if os.path.exists(args.out):
-        match = re.search(r'"count":(\d+)', read_text(args.out)[:200])
-        before = int(match.group(1)) if match else 0
-    if before and len(found) < before * MIN_KEPT_SHARE:
-        sys.exit(f"only {len(found)} apps against {before} in the file: the file is left as it was")
     previous = None
     if os.path.exists(args.out):
         previous = {e["appid"]: e for e in json.loads(read_text(args.out)).get("apps", [])}
-    track(found, previous, datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"))
+    # What the file held that Steam still lists: the apps that were kept as gone do not count, so they never hide a read that went wrong.
+    before = sum(1 for e in (previous or {}).values() if not e.get("delisted"))
+    if before and len(found) < before * MIN_KEPT_SHARE:
+        sys.exit(f"only {len(found)} apps against {before} in the file: the file is left as it was")
+    today = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+    track(found, previous, today)
+    kept = keep_removed(found, previous, lost_ids, today)
+    gone = [e["appid"] for e in kept if e.get("delisted") == today]
+    if kept:
+        print(f"{len(kept)} apps kept that were not found this time ({len(gone)} newly marked delisted, {len(lost_ids & {e['appid'] for e in kept})} only not read)")
     english = {}
     if key and not args.no_texts:
         english = store_items(key, sorted(a["appid"] for a in found), "english", MEDIA_REQUEST)
         add_store_facts(found, english)
-    print(f"{args.out} {'written' if write_if_changed(args.out, render(found)) else 'unchanged'}")
+    print(f"{args.out} {'written' if write_if_changed(args.out, render(found + kept)) else 'unchanged'}")
     if key and not args.no_texts:
-        write_texts(key, found, args.texts, english)
-        write_media(found, english, args.media)
+        write_texts(key, found, args.texts, english, kept)
+        write_media(found, english, args.media, kept)
     elif not args.no_texts:
         print("no STEAM_API_KEY: the texts are not read")
 

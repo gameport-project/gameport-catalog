@@ -37,8 +37,9 @@ Each app:
 | `appid`, `name`, `type` | Steam app id, name, and `game`, `demo` or `beta`. |
 | `parent` | For a demo or a beta, the app id of the full game. |
 | `android` | `ready`: a build is published and can be installed. `unreleased`: an Android depot exists but nothing is published (a future version). |
-| `installable` | `true` when `android` is `ready`. |
+| `installable` | `true` when `android` is `ready`, and the app is not `delisted`. |
 | `androidSince` | The day this catalog first saw the app installable: when its Android version arrived (the release date says nothing of it). `null` for apps that were already there when tracking began, and for apps not installable. |
+| `delisted` | Only on an app that Steam no longer lists with an Android build (a demo taken down, say): the day the catalog first missed it. It stays in the file as it was, with its name, its pictures, its text and its media, and is not installable. An app whose read failed for one run is kept without this mark, and one that comes back loses it. Nothing is ever dropped from the catalog. The head of the file then counts them apart (`"delisted":1`), and `ready` and `unreleased` only count the apps Steam still lists. |
 | `vr`, `vrMode` | `vrMode` is `only` (Valve's "VR Only"), `supported` or `none`. `vr` is true unless `none`. |
 | `runtime` | The layer Valve recommends for the Steam Frame; `lepton-stable` is the Android one. May be `null`. |
 | `frame`, `deck` | Valve's rating for the Steam Frame and the Steam Deck: `verified`, `playable`, `unsupported`, or `null`. `verified` for the Frame is certain (it is what the store filter `frame_compatibility=3` lists); `playable` and `unsupported` follow the Deck's scale. |

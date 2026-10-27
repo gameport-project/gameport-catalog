@@ -318,6 +318,83 @@ class RenderTest(unittest.TestCase):
         self.assertEqual(2 + 2, len(refresh.render(self.entries()).strip().splitlines()))
 
 
+class KeepRemovedTest(unittest.TestCase):
+    """Nothing is ever dropped from the catalog: an app Steam no longer lists stays, with its name and pictures."""
+
+    def entry(self, appid, status="ready", **common):
+        return refresh.classify(appid, app(depots={"11": depot("android", public=status == "ready")}, name=f"Game {appid}", **common))
+
+    def previous(self, *entries):
+        return {e["appid"]: e for e in entries}
+
+    def test_an_app_that_steam_no_longer_lists_stays_as_it_was_marked_delisted_and_not_installable(self):
+        gone = self.entry(5, parent=3)
+        gone["androidSince"] = "2026-10-20"
+        kept = refresh.keep_removed([self.entry(1)], self.previous(self.entry(1), gone), set(), "2026-10-27")
+        self.assertEqual([5], [e["appid"] for e in kept])
+        self.assertEqual("Game 5", kept[0]["name"])
+        self.assertEqual(gone["cover"], kept[0]["cover"])
+        self.assertEqual("2026-10-20", kept[0]["androidSince"])
+        self.assertEqual(["2026-10-27", False], [kept[0]["delisted"], kept[0]["installable"]])
+
+    def test_the_day_it_was_first_missing_is_kept_on_the_following_runs(self):
+        already = dict(self.entry(5), delisted="2026-10-20", installable=False)
+        kept = refresh.keep_removed([], self.previous(already), set(), "2026-10-27")
+        self.assertEqual("2026-10-20", kept[0]["delisted"])
+
+    def test_an_app_that_could_not_be_read_is_kept_exactly_as_it_was_without_the_mark(self):
+        unread = self.entry(5)
+        kept = refresh.keep_removed([], self.previous(unread), {5}, "2026-10-27")
+        self.assertEqual(unread, kept[0])
+        self.assertNotIn("delisted", kept[0])
+
+    def test_an_app_that_is_found_again_is_not_kept_and_so_loses_the_mark(self):
+        back = self.entry(5)
+        previous = self.previous(dict(self.entry(5), delisted="2026-10-20", installable=False))
+        self.assertEqual([], refresh.keep_removed([back], previous, set(), "2026-10-27"))
+        self.assertNotIn("delisted", back)
+
+    def test_an_app_that_goes_and_comes_back_keeps_the_day_its_android_version_arrived(self):
+        gone = refresh.keep_removed([], self.previous(dict(self.entry(5), androidSince="2026-10-03")), set(), "2026-10-27")
+        entries = refresh.track([self.entry(5)], self.previous(*gone), "2026-11-02")
+        self.assertEqual("2026-10-03", entries[0]["androidSince"])
+
+    def test_nothing_is_kept_without_a_file_before(self):
+        self.assertEqual([], refresh.keep_removed([self.entry(1)], None, set(), "2026-10-27"))
+
+    def test_the_file_counts_the_live_apps_apart_from_the_ones_kept_as_gone(self):
+        gone = dict(self.entry(5), delisted="2026-10-27", installable=False)
+        data = json.loads(refresh.render([self.entry(1), self.entry(2, "unreleased"), gone]))
+        self.assertEqual([1, 2, 5], [e["appid"] for e in data["apps"]])
+        self.assertEqual({"count": 3, "ready": 1, "unreleased": 1, "delisted": 1}, {k: data[k] for k in ("count", "ready", "unreleased", "delisted")})
+        plain = json.loads(refresh.render([self.entry(1)]))
+        self.assertNotIn("delisted", plain)
+
+    def test_the_text_of_a_kept_app_is_the_one_the_file_had_and_its_tags_still_count(self):
+        live = self.entry(20, store_tags={"0": "19"})
+        gone = dict(self.entry(10, store_tags={"0": "21"}), delisted="2026-10-27", installable=False)
+        texts = refresh.language_texts([live], {20: {"basic_info": {"short_description": "Vingt"}}}, {19: "Action", 21: "Aventure"}, "fr", [gone], {"10": "Dix"})
+        self.assertEqual({"10": "Dix", "20": "Vingt"}, texts["summaries"])
+        self.assertEqual(["10", "20"], list(texts["summaries"]))
+        self.assertEqual({"19": "Action", "21": "Aventure"}, texts["tags"])
+
+    def test_a_kept_app_without_a_text_before_has_none(self):
+        gone = dict(self.entry(10), delisted="2026-10-27", installable=False)
+        self.assertEqual({}, refresh.language_texts([], {}, {}, "fr", [gone], {})["summaries"])
+
+    def test_the_media_of_a_kept_app_is_the_one_the_file_had(self):
+        import os
+        import tempfile
+        with tempfile.TemporaryDirectory() as folder:
+            path = os.path.join(folder, "media.json")
+            open(path, "w").write(refresh.render_media({10: {"s": ["ss_" + "a" * 40]}, 20: {"s": ["ss_" + "b" * 40]}}))
+            gone = dict(self.entry(10), delisted="2026-10-27", installable=False)
+            refresh.write_media([self.entry(20)], {}, path, [gone])
+            data = json.loads(open(path).read())
+            self.assertEqual(["10"], list(data["apps"]))
+            self.assertEqual({"s": ["ss_" + "a" * 40]}, data["apps"]["10"])
+
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -385,7 +462,7 @@ class MendArtworkTest(unittest.TestCase):
 class ScanTimeoutTest(unittest.TestCase):
     """A read of Steam that takes too long is tried again, then counted as lost, and never stops the run."""
 
-    def _scan(self, answers, ids):
+    def _scan(self, answers, ids, lost_ids=None):
         from gevent import Timeout
 
         class Fake:
@@ -408,7 +485,7 @@ class ScanTimeoutTest(unittest.TestCase):
         original = refresh.SteamClient
         refresh.SteamClient = Fake
         try:
-            return refresh.scan(ids), Fake.calls
+            return refresh.scan(ids, lost_ids), Fake.calls
         finally:
             refresh.SteamClient = original
 
@@ -424,3 +501,11 @@ class ScanTimeoutTest(unittest.TestCase):
         # The first chunk never answers; the second does.
         (found, lost, _), _ = self._scan(lambda n, apps: Timeout if apps[0] == 1 else {"apps": {}}, ids)
         self.assertEqual(refresh.CHUNK, lost)
+
+    def test_the_ids_that_could_not_be_read_are_named_so_that_an_app_among_them_is_not_taken_for_gone(self):
+        from gevent import Timeout
+        ids = list(range(1, refresh.CHUNK * 2 + 1))
+        lost_ids = set()
+        (_, lost, _), _ = self._scan(lambda n, apps: Timeout if apps[0] == 1 else {"apps": {}}, ids, lost_ids)
+        self.assertEqual(set(range(1, refresh.CHUNK + 1)), lost_ids)
+        self.assertEqual(lost, len(lost_ids))
