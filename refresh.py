@@ -45,6 +45,12 @@ LISTED = {"game", "demo", "beta", "application"}
 CHUNK = 200
 PARALLEL = 4
 READ_TIMEOUT = 90         # seconds to wait for one chunk of ids
+# Steam stops giving the data of the apps to an anonymous session once it has read a great many of them (about 40 000): its answers keep one entry for each id, with nothing in it, and
+# so did the runs that found 36 apps against 252. A new anonymous session has the data again. So the chunks are read in batches, with a new session between two batches, and a batch
+# that comes back almost empty is read again with a new session.
+SESSION_BATCH = 100       # chunks read with one session
+DRY_SHARE = 0.2           # a batch where fewer of the entries than this have a name went empty
+DRY_MIN_ENTRIES = 2000    # and it must have given at least this many entries to say so
 MAX_LOST_SHARE = 0.005   # a read that loses more of the ids is not written
 MIN_KEPT_SHARE = 0.5     # nor one that finds less than this share of what the file held
 VR_TAG = 21978           # store tag "VR"; category_53 / category_54 are Valve's "VR Supported" / "VR Only"
@@ -545,14 +551,30 @@ def scan(ids, lost_ids=None, canary=()):
             if entry:
                 found.append(entry)
 
+    # The session in use, and what the batch being read has been given: replaced between two batches (see SESSION_BATCH).
+    current = {"client": client}
+    batch = {"entries": 0, "named": 0}
+
+    def new_session(why):
+        try:
+            current["client"].logout()
+        except Exception:  # a session that is already gone has nothing to close
+            pass
+        current["client"] = SteamClient()
+        print(f"anonymous logon ({why}): {current['client'].anonymous_login()}, server {getattr(current['client'], 'current_server_addr', '?')}", flush=True)
+
     def read(chunk):
         for attempt in range(3):
+            client = current["client"]
             try:
                 answer = client.get_product_info(apps=chunk, timeout=READ_TIMEOUT)
                 apps = answer.get("apps") or {}
                 stubs = [appid for appid, data in apps.items() if data.get("_missing_token")]
+                named = sum(1 for data in apps.values() if (data.get("common") or {}).get("name"))
+                batch["entries"] += len(apps)
+                batch["named"] += named
                 window["entries"] += len(apps)
-                window["named"] += sum(1 for data in apps.values() if (data.get("common") or {}).get("name"))
+                window["named"] += named
                 window["stubs"] += len(stubs)
                 window["unknown"] += len(answer.get("unknown_apps") or [])
                 if stubs:
@@ -578,8 +600,20 @@ def scan(ids, lost_ids=None, canary=()):
             for key in window:
                 window[key] = 0
 
-    Pool(PARALLEL).map(read, chunks)
-    client.logout()
+    for start in range(0, len(chunks), SESSION_BATCH):
+        part = chunks[start:start + SESSION_BATCH]
+        batch["entries"] = batch["named"] = 0
+        Pool(PARALLEL).map(read, part)
+        dry = batch["entries"] >= DRY_MIN_ENTRIES and batch["named"] < DRY_SHARE * batch["entries"]
+        if dry:
+            print(f"the answers of this session went empty ({batch['named']} of {batch['entries']} entries have a name): a new session reads this batch again", flush=True)
+            new_session("the answers went empty")
+            Pool(PARALLEL).map(read, part)
+        elif start + SESSION_BATCH < len(chunks):
+            new_session("a new session for the next batch")
+    current["client"].logout()
+    # An app read twice (a batch read again) is one app.
+    found[:] = list({entry["appid"]: entry for entry in found}.values())
     return found, lost[0], types
 
 

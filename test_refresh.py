@@ -544,3 +544,60 @@ class ScanTimeoutTest(unittest.TestCase):
         (_, lost, _), _ = self._scan(lambda n, apps: Timeout if apps[0] == 1 else {"apps": {}}, ids, lost_ids)
         self.assertEqual(set(range(1, refresh.CHUNK + 1)), lost_ids)
         self.assertEqual(lost, len(lost_ids))
+
+
+class SessionTest(unittest.TestCase):
+    """Steam stops giving the data of the apps to an anonymous session that has read a great many: the batches are read with new sessions, and an empty batch is read again."""
+
+    def _scan(self, limited_first_session=None, batch=100):
+        outer = self
+
+        class Fake:
+            created = 0
+
+            def __init__(self):
+                self.index = Fake.created
+                Fake.created += 1
+                self.served = 0
+                self.connected = True
+
+            def anonymous_login(self):
+                return 1
+
+            def logout(self):
+                pass
+
+            def get_product_info(self, apps, timeout):
+                self.served += 1
+                empty = limited_first_session is not None and self.index == 0 and self.served > limited_first_session
+                found = {}
+                for appid in apps:
+                    # What Steam gives a session that went empty: an entry for each id, with nothing in it.
+                    found[appid] = {} if empty else {"common": {"name": f"game {appid}", "type": "game"}, "depots": {"11": depot("android")} if appid == 75 else {}}
+                return {"apps": found}
+
+        saved = (refresh.SteamClient, refresh.CHUNK, refresh.SESSION_BATCH, refresh.DRY_MIN_ENTRIES)
+        refresh.SteamClient, refresh.CHUNK, refresh.SESSION_BATCH, refresh.DRY_MIN_ENTRIES = Fake, 10, batch, 50
+        try:
+            return refresh.scan(list(range(1, 81))), Fake.created
+        finally:
+            refresh.SteamClient, refresh.CHUNK, refresh.SESSION_BATCH, refresh.DRY_MIN_ENTRIES = saved
+
+    def test_a_healthy_run_keeps_its_session(self):
+        (found, lost, _), sessions = self._scan()
+        self.assertEqual([75], [e["appid"] for e in found])
+        self.assertEqual(1, sessions)
+
+    def test_a_new_session_is_opened_between_two_batches(self):
+        (found, lost, _), sessions = self._scan(batch=3)
+        self.assertEqual([75], [e["appid"] for e in found])
+        self.assertEqual(3, sessions)  # the first, and one after each of the two first batches of three chunks
+
+    def test_a_batch_that_came_back_empty_is_read_again_with_a_new_session(self):
+        (found, lost, _), sessions = self._scan(limited_first_session=1)
+        self.assertEqual([75], [e["appid"] for e in found])
+        self.assertEqual(2, sessions)
+
+    def test_an_app_read_twice_is_listed_once(self):
+        (found, lost, _), _ = self._scan(limited_first_session=1)
+        self.assertEqual(1, len(found))
