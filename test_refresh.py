@@ -81,6 +81,41 @@ class ClassifyTest(unittest.TestCase):
         for kind in ("dlc", "tool", "video", "music"):
             self.assertIsNone(refresh.classify(5, app(kind, {"11": depot("android")})))
 
+    def channels_app(self, manifests, dlc_manifests=None, branches=None):
+        """An app with an Android depot of the game on the given channels, and the words Steam gives for the channels."""
+        depots = {"11": {"config": {"oslist": "android"}, "manifests": {name: {"gid": "7", "size": "1000", "download": "400"} for name in manifests}}}
+        if dlc_manifests:
+            depots["12"] = {"config": {"oslist": "android"}, "dlcappid": "99", "manifests": {name: {"gid": "8", "size": "5", "download": "5"} for name in dlc_manifests}}
+        depots["branches"] = branches or {}
+        return app(depots=depots)
+
+    def test_the_test_channels_that_hold_an_android_build_are_listed_with_their_day(self):
+        entry = refresh.classify(5, self.channels_app(["public", "beta", "alpha"], branches={"beta": {"timeupdated": "1790000000"}, "alpha": {"timeupdated": "1780000000"}}))
+        self.assertEqual([{"name": "alpha", "updated": refresh.day(1780000000)}, {"name": "beta", "updated": refresh.day(1790000000)}], entry["channels"])
+        self.assertEqual("ready", entry["android"])
+        self.assertFalse(entry["channelOnly"])
+
+    def test_a_channel_that_asks_a_password_is_not_listed(self):
+        entry = refresh.classify(5, self.channels_app(["public", "beta", "private"], branches={"private": {"pwdrequired": "1"}, "beta": {"pwdrequired": "0"}}))
+        self.assertEqual(["beta"], [c["name"] for c in entry["channels"]])
+
+    def test_a_game_with_nothing_on_the_normal_channel_but_a_test_channel_is_channel_only(self):
+        entry = refresh.classify(5, self.channels_app(["beta"], branches={"beta": {"timeupdated": "1790000000"}}))
+        self.assertEqual("unreleased", entry["android"])
+        self.assertFalse(entry["installable"])
+        self.assertTrue(entry["channelOnly"])
+        self.assertEqual(["beta"], [c["name"] for c in entry["channels"]])
+
+    def test_a_channel_that_only_holds_an_add_on_does_not_count(self):
+        entry = refresh.classify(5, self.channels_app(["public"], dlc_manifests=["beta"]))
+        self.assertEqual([], entry["channels"])
+        self.assertFalse(entry["channelOnly"])
+
+    def test_a_game_with_a_published_android_depot_and_no_other_channel_has_none(self):
+        entry = refresh.classify(5, app(depots={"11": depot("android")}))
+        self.assertEqual([], entry["channels"])
+        self.assertFalse(entry["channelOnly"])
+
     def test_the_os_list_may_name_several_systems(self):
         self.assertIsNotNone(refresh.classify(5, app(depots={"11": depot("linux, android")})))
 

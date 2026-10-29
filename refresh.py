@@ -132,6 +132,20 @@ def keep_removed(found, previous, lost_ids, today):
     return kept
 
 
+def test_channels(data, android):
+    """The channels (branches of Steam) other than the normal one that hold an Android build of the base game and ask no password, with the day of their last update: a test
+    version of the game that anyone can pick on Steam. The depots of an add-on are not the game, and a channel that asks a password cannot be fetched."""
+    branches = (data.get("depots") or {}).get("branches") or {}
+    names = {branch for d in android if number(d.get("dlcappid")) <= 0 for branch, manifest in (d.get("manifests") or {}).items() if branch != "public" and isinstance(manifest, dict)}
+    channels = []
+    for name in sorted(names):
+        info = branches.get(name) if isinstance(branches.get(name), dict) else {}
+        if number(info.get("pwdrequired"), 0):
+            continue
+        channels.append({"name": name, "updated": day(number(info.get("timeupdated"), 0))})
+    return channels
+
+
 def classify(appid, data):
     """The catalog entry of an app, or None when it declares no Android depot (or is not a game, a demo, a beta or an application)."""
     common = data.get("common") or {}
@@ -146,6 +160,7 @@ def classify(appid, data):
     published = [d for d in android if isinstance((d.get("manifests") or {}).get("public"), dict)]
     base = [d for d in published if number(d.get("dlcappid")) <= 0]
     ready = bool(base)
+    channels = test_channels(data, android)
     asset = lambda key: asset_name(common, key)
     header = (common.get("header_image") or {}).get("english") or asset("library_header")
     categories = common.get("category") or {}
@@ -168,6 +183,9 @@ def classify(appid, data):
         "vrMode": vr_mode,
         "android": "ready" if ready else "unreleased",
         "installable": ready,
+        # The test channels that hold an Android build, and whether they are all there is: nothing on the normal channel, so it is not "ready", but it can be installed from a channel.
+        "channels": channels,
+        "channelOnly": bool(channels) and not ready,
         "runtime": find(data, "recommended_runtime"),
         "release": day(released),
         "updated": day(number(((data.get("depots") or {}).get("branches") or {}).get("public", {}).get("timeupdated"), 0) if isinstance((((data.get("depots") or {}).get("branches") or {}).get("public")), dict) else 0),
