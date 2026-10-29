@@ -487,25 +487,62 @@ def mend_artwork(entries, exists=picture_exists, parents=read_parents):
     return mended
 
 
-def scan(ids, lost_ids=None):
+def read_with_tokens(client, apps):
+    """Reads again the apps that Steam answered with a stub, as the player's own client does: first it asks for the access token of each, then for the product info with it. Returns
+    the answer's apps and how many tokens Steam gave. An app whose token is 0 is public: a stub for it is not a matter of permission."""
+    tokens = (client.get_access_tokens(app_ids=list(apps)) or {}).get("apps") or {}
+    if not tokens:
+        return {}, 0
+    answer = client.get_product_info(apps=[{"appid": appid, "access_token": token} for appid, token in tokens.items()], timeout=READ_TIMEOUT)
+    return (answer.get("apps") or {}), sum(1 for token in tokens.values() if token)
+
+
+def scan(ids, lost_ids=None, canary=()):
     """The entries of the apps with an Android build among `ids`, the number of ids that could not be read, and the count of each app type seen. The ids that could not be read
-    are added to `lost_ids` when a set is given: an app among them is not gone, it was not read."""
+    are added to `lost_ids` when a set is given: an app among them is not gone, it was not read. `canary` is the apps the catalog already holds: how many of them Steam answers
+    for with their data is written first, to tell a session that sees nothing from a catalog that really lost its apps."""
     client = SteamClient()
     result = client.anonymous_login()
-    print("anonymous logon:", result, flush=True)
+    print(f"anonymous logon: {result}, server {getattr(client, 'current_server_addr', '?')}", flush=True)
+    if canary:
+        named = 0
+        for start in range(0, len(canary), CHUNK):
+            try:
+                answer = client.get_product_info(apps=list(canary[start:start + CHUNK]), timeout=READ_TIMEOUT)
+            except (Exception, Timeout) as error:
+                print(f"canary read failed: {type(error).__name__}", flush=True)
+                continue
+            named += sum(1 for data in (answer.get("apps") or {}).values() if (data.get("common") or {}).get("name"))
+        print(f"canary: {named} of the {len(canary)} apps the catalog holds are answered with their data", flush=True)
     found, lost, types, done = [], [0], {}, [0]
+    # What Steam answered since the last line: the entries, those with a name, the stubs (no permission), the ids it does not know, and what a read with a token gave back.
+    window = {"entries": 0, "named": 0, "stubs": 0, "unknown": 0, "tokens_given": 0, "recovered": 0}
     chunks = [ids[i:i + CHUNK] for i in range(0, len(ids), CHUNK)]
+
+    def take(apps):
+        for appid, data in apps.items():
+            kind = str((data.get("common") or {}).get("type", "?")).lower()
+            types[kind] = types.get(kind, 0) + 1
+            entry = classify(int(appid), data)
+            if entry:
+                found.append(entry)
 
     def read(chunk):
         for attempt in range(3):
             try:
                 answer = client.get_product_info(apps=chunk, timeout=READ_TIMEOUT)
-                for appid, data in (answer.get("apps") or {}).items():
-                    kind = str((data.get("common") or {}).get("type", "?")).lower()
-                    types[kind] = types.get(kind, 0) + 1
-                    entry = classify(int(appid), data)
-                    if entry:
-                        found.append(entry)
+                apps = answer.get("apps") or {}
+                stubs = [appid for appid, data in apps.items() if data.get("_missing_token")]
+                window["entries"] += len(apps)
+                window["named"] += sum(1 for data in apps.values() if (data.get("common") or {}).get("name"))
+                window["stubs"] += len(stubs)
+                window["unknown"] += len(answer.get("unknown_apps") or [])
+                if stubs:
+                    again, given = read_with_tokens(client, stubs)
+                    window["tokens_given"] += given
+                    window["recovered"] += sum(1 for data in again.values() if (data.get("common") or {}).get("name"))
+                    apps = {**apps, **{appid: data for appid, data in again.items() if (data.get("common") or {}).get("name")}}
+                take(apps)
                 break
             # gevent's Timeout is not an Exception: without naming it here a read that took too long stopped the whole run, after more than twenty minutes of work.
             except (Exception, Timeout) as error:
@@ -518,7 +555,10 @@ def scan(ids, lost_ids=None):
                     client.anonymous_login()
         done[0] += 1
         if done[0] % 100 == 0:
-            print(f"{done[0]}/{len(chunks)} chunks, {len(found)} apps with an Android depot", flush=True)
+            print(f"{done[0]}/{len(chunks)} chunks, {len(found)} apps with an Android depot; Steam answered {window['entries']} entries, {window['named']} with a name, "
+                  f"{window['stubs']} stubs, {window['unknown']} unknown ids; tokens: {window['tokens_given']} given, {window['recovered']} apps recovered", flush=True)
+            for key in window:
+                window[key] = 0
 
     Pool(PARALLEL).map(read, chunks)
     client.logout()
@@ -546,7 +586,11 @@ def main():
         ids = sorted(set(ids) | set(demo_ids()))
     print(f"{len(ids)} ids to read", flush=True)
     lost_ids = set()
-    found, lost, types = scan(ids, lost_ids)
+    # The apps the catalog already holds (those Steam still lists): the first to be read, to see whether this session gets their data.
+    known = []
+    if os.path.exists(args.out):
+        known = sorted(e["appid"] for e in json.loads(read_text(args.out)).get("apps", []) if not e.get("delisted"))
+    found, lost, types = scan(ids, lost_ids, known)
     print(f"pictures found again for the apps whose own cover or banner has no file: {mend_artwork(found)}", flush=True)
     ready = sum(1 for e in found if e["android"] == "ready")
     print(f"{len(found)} apps with an Android depot ({ready} ready, {len(found) - ready} unreleased, {sum(1 for e in found if e['vr'])} VR), {lost} ids lost")
