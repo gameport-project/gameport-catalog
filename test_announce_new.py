@@ -90,6 +90,24 @@ class LineTest(unittest.TestCase):
         self.assertNotIn("Adult", a.line(app(5)))
 
 
+class LeadTest(unittest.TestCase):
+    """The plain message sent right before the rich one, so the push notification is readable: Components V2 messages cannot carry a content of their own."""
+
+    def test_names_the_apps_in_the_singular_and_the_plural(self):
+        self.assertIn("New Android game · App 1", a.lead([app(1)])["content"])
+        self.assertIn("New Android games · App 1, App 2", a.lead([app(1), app(2)])["content"])
+
+    def test_more_than_the_limit_are_only_counted(self):
+        content = a.lead([app(i) for i in range(1, 8)])["content"]
+        self.assertIn(", ".join(f"App {i}" for i in range(1, 6)), content)
+        self.assertIn("and 2 more", content)
+        self.assertNotIn("App 6", content)
+
+    def test_a_trial_is_marked_as_one(self):
+        self.assertTrue(a.lead([app(1)], test=True)["content"].startswith("Test: "))
+        self.assertFalse(a.lead([app(1)])["content"].startswith("Test: "))
+
+
 class MessagesTest(unittest.TestCase):
     def test_the_cover_of_an_app_is_on_the_right_of_its_text(self):
         (message,) = a.messages([app(1)])
@@ -127,13 +145,13 @@ class MessagesTest(unittest.TestCase):
         self.assertEqual(1, len(bodies))
         self.assertLessEqual(sum(count(c) for c in bodies[0]["components"]), 40)
 
-    def test_the_apps_go_nine_by_nine_and_only_the_first_message_notifies(self):
+    def test_the_apps_go_nine_by_nine_and_all_messages_are_silent(self):
         bodies = a.messages([app(i) for i in range(1, 26)])
         self.assertEqual(3, len(bodies))
         for body in bodies:
             self.assertLessEqual(sum(count(c) for c in body["components"]), 40)
             self.assertTrue(body["flags"] & a.COMPONENTS_V2)
-        self.assertEqual([False, True, True], [bool(b["flags"] & a.SILENT) for b in bodies])
+        self.assertEqual([True, True, True], [bool(b["flags"] & a.SILENT) for b in bodies])
         title = bodies[0]["components"][0]["components"][0]["content"]
         self.assertIn("**25 new Android versions on Steam**", title)
 
@@ -147,14 +165,18 @@ class MessagesTest(unittest.TestCase):
         self.assertEqual(a.MAX_ANNOUNCED, sections)
         self.assertIn("and 15 more", bodies[-1]["components"][0]["components"][-1]["content"])
 
-    def test_a_role_is_mentioned_once_and_nobody_else_can_be(self):
-        bodies = a.messages([app(i) for i in range(1, 13)], role_id="123456789")
-        self.assertIn("<@&123456789> ", bodies[0]["components"][0]["components"][0]["content"])
-        self.assertEqual({"parse": [], "roles": ["123456789"]}, bodies[0]["allowed_mentions"])
-        self.assertEqual({"parse": [], "roles": []}, bodies[1]["allowed_mentions"])
-        self.assertNotIn("<@&", json.dumps(bodies[1]))
+    def test_a_role_is_mentioned_once_in_the_notification_and_nobody_else_can_be(self):
+        body = a.lead([app(i) for i in range(1, 13)], role_id="123456789")
+        self.assertIn("<@&123456789> ", body["content"])
+        self.assertEqual({"parse": [], "roles": ["123456789"]}, body["allowed_mentions"])
+        for message in a.messages([app(i) for i in range(1, 13)]):
+            self.assertEqual({"parse": [], "roles": []}, message["allowed_mentions"])
+            self.assertNotIn("<@&", json.dumps(message))
 
     def test_without_a_role_no_mention_is_allowed(self):
+        body = a.lead([app(1)])
+        self.assertEqual({"parse": [], "roles": []}, body["allowed_mentions"])
+        self.assertNotIn("<@", json.dumps(body))
         (message,) = a.messages([app(1)])
         self.assertEqual({"parse": [], "roles": []}, message["allowed_mentions"])
         self.assertNotIn("<@", json.dumps(message))

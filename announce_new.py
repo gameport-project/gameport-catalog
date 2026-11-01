@@ -150,9 +150,26 @@ def picture_of(app):
     return app.get("cover") or app.get("header") or app.get("capsule") or app.get("banner")
 
 
-def messages(apps, role_id=None, test=False, prices=None, symbol="", thumbs=None):
-    """The messages to send, in order, each a webhook body: one framed block, a title, and a line for each app with its text on the left and its cover on the right,
-    a thin line between two apps. The first message notifies; the others are silent. More than MAX_ANNOUNCED are cut."""
+MAX_LEAD_NAMES = 5
+
+
+def lead(apps, role_id=None, test=False):
+    """The plain, link-free message sent right before the rich one, so the push notification reads the game names instead of nothing: a message that only has
+    components (no top-level content) is not allowed to give Discord a preview text of its own."""
+    names = ", ".join(app["name"] for app in apps[:MAX_LEAD_NAMES])
+    hidden = len(apps) - MAX_LEAD_NAMES
+    noun = "game" if len(apps) == 1 else "games"
+    return {
+        "username": "GamePort",
+        "content": ("Test: " if test else "") + (f"<@&{role_id}> " if role_id else "") + f"New Android {noun} · {names}" + (f" and {hidden} more" if hidden > 0 else ""),
+        "allowed_mentions": {"parse": [], "roles": [role_id] if role_id else []},
+    }
+
+
+def messages(apps, test=False, prices=None, symbol="", thumbs=None):
+    """The rich messages, in order, each a webhook body: one framed block, a title, and a line for each app with its text on the left and its cover on the right,
+    a thin line between two apps. All silent and mentioning nobody: [lead], sent before them, is the one that notifies and mentions the role. More than
+    MAX_ANNOUNCED are cut."""
     prices = prices or {}
     shown = apps[:MAX_ANNOUNCED]
     hidden = len(apps) - len(shown)
@@ -162,7 +179,7 @@ def messages(apps, role_id=None, test=False, prices=None, symbol="", thumbs=None
         inside = []
         if number == 0:
             noun = "version" if len(apps) == 1 else "versions"
-            inside.append({"type": 10, "content": ("**Test** " if test else "") + (f"<@&{role_id}> " if role_id else "") + f"**{len(apps)} new Android {noun} on Steam**"})
+            inside.append({"type": 10, "content": ("**Test** " if test else "") + f"**{len(apps)} new Android {noun} on Steam**"})
             inside.append({"type": 14, "divider": True, "spacing": 1})
         for position, app in enumerate(chunk):
             if position:
@@ -179,9 +196,9 @@ def messages(apps, role_id=None, test=False, prices=None, symbol="", thumbs=None
             inside.append({"type": 10, "content": f"-# {more}all of them on {where}" if hidden or len(apps) > 1 else f"-# on {where}"})
         out.append({
             "username": "GamePort",
-            "flags": COMPONENTS_V2 | (0 if number == 0 else SILENT),
+            "flags": COMPONENTS_V2 | SILENT,
             "components": [{"type": 17, "accent_color": BLURPLE, "components": inside}],
-            "allowed_mentions": {"parse": [], "roles": [role_id] if role_id and number == 0 else []},
+            "allowed_mentions": {"parse": [], "roles": []},
         })
     return out
 
@@ -241,9 +258,11 @@ def main():
         return
     symbol, prices = read_prices(os.environ.get("DISCORD_PRICE_COUNTRY") or "fr")
     thumbs = thumbnails(apps)
-    bodies = messages(apps, role, test=test, prices=prices, symbol=symbol, thumbs=thumbs)
+    lead_body = lead(apps, role, test=test)
+    bodies = messages(apps, test=test, prices=prices, symbol=symbol, thumbs=thumbs)
+    print(f"--- notification\n{lead_body['content']}")
     for number, body in enumerate(bodies, 1):
-        print(f"--- message {number}/{len(bodies)}{' (silent)' if body['flags'] & SILENT else ''}")
+        print(f"--- message {number}/{len(bodies)} (silent)")
         for item in body["components"][0]["components"]:
             if item["type"] == 10:
                 print(item["content"])
@@ -253,6 +272,11 @@ def main():
     if not url:
         print("\nNothing was sent: DISCORD_NEW_GAMES_WEBHOOK is not set.")
         return
+    try:
+        print(f"notification: {send(url, lead_body)}")
+    except urllib.error.HTTPError as error:
+        sys.exit(f"Discord answered {error.code}")
+    time.sleep(1)
     for number, body in enumerate(bodies, 1):
         try:
             print(f"message {number}/{len(bodies)}: {send(url, body, files_of(body, thumbs))}")
